@@ -130,7 +130,7 @@
 
       <div>
         <label>7. Alma de Aço *</label>
-        <select id="almaaço" name="almaaço" required>
+        <select id="almaaco" name="almaaco" required>
           <option>Sim</option>
           <option>Não</option>
           <option>Não Verificado</option>
@@ -156,7 +156,6 @@
     <div>
       <label>10. Arquivo + Localização *</label>
 
-      <!-- O Worker espera name="arquivo" -->
       <input id="file" name="arquivo" type="file" accept="image/*" required>
 
       <button type="button" id="btnGeo">Obter Geolocalização</button>
@@ -178,6 +177,37 @@
 
 <script>
 const SUBMIT_URL = "https://withered-hat-347d.pedro-fillype.workers.dev/submit";
+
+/* ➤ FUNÇÃO DE COMPRESSÃO AUTOMÁTICA */
+function compressImage(file) {
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      const img = new Image();
+      img.src = e.target.result;
+
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+
+        const maxWidth = 1280; // Reduz bem o tamanho
+        const scale = maxWidth / img.width;
+
+        canvas.width = maxWidth;
+        canvas.height = img.height * scale;
+
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+        canvas.toBlob(
+          blob => resolve(blob),
+          "image/jpeg",
+          0.7 // qualidade da compressão
+        );
+      };
+    };
+    reader.readAsDataURL(file);
+  });
+}
 
 /* GEOLOCATION */
 document.getElementById('btnGeo').onclick = () => {
@@ -202,11 +232,25 @@ document.getElementById('file').onchange = e => {
   }
 };
 
-/* SEND FORM */
+/* ➤ ENVIO COM COMPRESSÃO AUTOMÁTICA */
 document.getElementById('llForm').onsubmit = async e => {
   e.preventDefault();
 
-  const fd = new FormData(llForm);
+  const fileInput = document.getElementById("file");
+  const file = fileInput.files[0];
+
+  // 🔥 COMPRESSÃO AUTOMÁTICA
+  const compressedBlob = await compressImage(file);
+  const compressedFile = new File([compressedBlob], "foto_comprimida.jpg", { type: "image/jpeg" });
+
+  const fd = new FormData();
+
+  // substitui apenas a imagem
+  fd.append("arquivo", compressedFile);
+
+  // inclui o resto dos campos
+  const fields = ["equipe","base","componente","servicoll","medidor","condutor","almaaco","acessocaminhao","endereco","gps","observacao"];
+  fields.forEach(id => fd.append(id, document.getElementById(id).value));
 
   const resp = await fetch(SUBMIT_URL, { method: "POST", body: fd });
 
