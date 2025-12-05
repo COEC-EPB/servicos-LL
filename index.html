@@ -5,88 +5,122 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Serviços LL - Linha Viva Leve</title>
 
+<!-- ÍCONES -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 
 <style>
-  /* 🔵 Caixa destacada para Upload + GPS */
-.local-box {
-  background: #f1faff;
-  border-left: 5px solid var(--energisa-blue);
-  padding: 15px;
-  border-radius: 10px;
-}
+  :root {
+    --energisa-blue: #0097CE;
+    --energisa-blue-dark: #0079a6;
+    --energisa-orange: #F36F21;
+    --bg-soft: #eef6fa;
+    --bg-white: #ffffff;
+    --text-dark: #333;
+  }
 
-/* Linha horizontal */
-.local-row {
-  display: flex;
-  gap: 20px;
-  align-items: center;
-}
+  body {
+    font-family: "Segoe UI", Roboto, sans-serif;
+    background: var(--bg-soft);
+    margin: 0;
+  }
 
-@media (max-width: 720px) {
-  .local-row { flex-direction: column; }
-}
+  .card {
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 28px;
+    background: var(--bg-white);
+    border-radius: 14px;
+    box-shadow: 0 6px 26px rgba(0,0,0,0.10);
+    border-top: 6px solid var(--energisa-orange);
+  }
 
-/* Upload */
-.local-upload input {
-  background: #fff;
-  padding: 10px;
-  border-radius: 8px;
-  border: 1px solid #cfd8dc;
-}
+  h1 {
+    text-align: center;
+    color: var(--energisa-blue-dark);
+    margin-bottom: 20px;
+    font-size: 26px;
+    font-weight: 800;
+  }
 
-.local-preview {
-  max-height: 160px;
-  margin-top: 10px;
-  display: none;
-  border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.15);
-}
+  form {
+    display: grid;
+    gap: 15px;
+  }
 
-/* GPS */
-.local-geo {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  width: 100%;
-}
+  label {
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
 
-/* 🔥 Botão estilizado */
-.geo-btn {
-  background: var(--energisa-orange);
-  color: white;
-  border: none;
-  padding: 12px;
-  font-size: 15px;
-  font-weight: 700;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-  box-shadow: 0 3px 12px rgba(0,0,0,0.12);
-  transition: transform 0.1s ease-in-out;
-}
+  input, select, textarea {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #cfd8dc;
+    font-size: 15px;
+  }
 
-.geo-btn:hover {
-  transform: scale(1.03);
-}
+  .row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
 
-.geo-btn i {
-  font-size: 18px;
-}
+  @media(max-width: 720px) {
+    .row { grid-template-columns: 1fr; }
+  }
 
-/* Caixa das coordenadas */
-#gps {
-  background: #e8f6ff;
-  border: 1px solid #0097ce55;
-  padding: 12px;
-  border-radius: 10px;
-  font-weight: bold;
-  color: #0079a6;
-}
+  button {
+    background: var(--energisa-blue);
+    color: white;
+    border: none;
+    padding: 14px;
+    font-size: 16px;
+    font-weight: 700;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+
+  /* --- BLOCO DE LOCALIZAÇÃO --- */
+  .geo-box {
+    background: var(--energisa-blue);
+    padding: 14px;
+    border-radius: 12px;
+    color: white;
+    margin-top: 10px;
+  }
+
+  .geo-row {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 12px;
+    align-items: center;
+  }
+
+  #gps {
+    background: #ffffff;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--text-dark);
+  }
+
+  #btnGeo {
+    background: var(--energisa-orange);
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    color: #fff;
+    white-space: nowrap;
+  }
+
 </style>
 </head>
+
 <body>
 
 <div class="card">
@@ -101,13 +135,19 @@
         <label>2. Base *</label>
         <select id="base" name="base" required>
           <option value="">Selecione...</option>
-          <option>João Pessoa</option>
-          <option>Campina Grande</option>
-          <option>Patos</option>
-          <option>Outros</option>
+          <option>Sede</option>
+          <option>Cabedelo</option>
+          <option>Cruz do Peixe</option>
+          <option>Santa Rita</option>
+          <option>Mangabeira</option>
+          <option>Paratibe</option>
+          <option>Itabaiana</option>
+          <option>Caaporã</option>
+          <option>Mamanguape</option>
+          <option>Sapé</option>
         </select>
       </div>
-
+      
       <div>
         <label>3. Componente *</label>
         <input id="componente" name="componente" required>
@@ -123,6 +163,22 @@
           <option>Instalação</option>
           <option>Manutenção</option>
           <option>Retirada</option>
+          <option>Substituição de isolador pino</option>
+          <option>Substituição de isolador de ancoragem</option>
+          <option>Instalação de cabo protegido / bypass</option>
+          <option>Reparo com emenda pré-formada</option>
+          <option>Ponto quente em bucha secundária</option>
+          <option>Abertura de jumper sem carga</option>
+          <option>Fechamento de jumper sem carga</option>
+          <option>Substituir chave fusível / faca</option>
+          <option>Retirar by-pass</option>
+          <option>Instalação de espaçadores</option>
+          <option>Amarração Grinfa</option>
+          <option>Retirar ninho</option>
+          <option>Retirar pipa/objetos</option>
+          <option>Instalação de elastômetro</option>
+          <option>Poda de árvore em contato</option>
+          <option>Mudança de TAP</option>
         </select>
       </div>
 
@@ -163,27 +219,21 @@
       </div>
     </div>
 
-    <div class="local-box">
-  <label>10. Arquivo + Localização *</label>
-
-  <div class="local-row">
-
-    <div class="local-upload">
+    <!-- ARQUIVO + GEO LOCALIZAÇÃO -->
+    <div>
+      <label>10. Arquivo + Localização *</label>
       <input id="file" name="arquivo" type="file" accept="image/*" required>
-      <img id="preview" class="local-preview" />
+      <img id="preview" style="max-height:200px; margin-top:10px; display:none;" />
+
+      <div class="geo-box">
+        <div class="geo-row">
+          <button type="button" id="btnGeo">
+            <i class="bi bi-geo-alt-fill"></i> Localizar
+          </button>
+          <input id="gps" name="gps" readonly placeholder="Coordenadas aparecerão aqui" required />
+        </div>
+      </div>
     </div>
-
-    <div class="local-geo">
-      <button type="button" id="btnGeo" class="geo-btn">
-        <i class="bi bi-geo-alt-fill"></i> Obter Localização
-      </button>
-
-      <input id="gps" name="gps" readonly
-        placeholder="Coordenadas aparecerão aqui">
-    </div>
-
-  </div>
-</div>
 
     <div>
       <label>11. Observação</label>
@@ -191,98 +241,91 @@
     </div>
 
     <button id="btnSubmit" type="submit">Enviar Registro LL</button>
-
   </form>
 </div>
 
 <script>
-const SUBMIT_URL = "https://withered-hat-347d.pedro-fillype.workers.dev/submit";
+  const SUBMIT_URL = "https://withered-hat-347d.pedro-fillype.workers.dev/submit";
 
-/* ➤ FUNÇÃO DE COMPRESSÃO AUTOMÁTICA */
-function compressImage(file) {
-  return new Promise((resolve) => {
-    const reader = new FileReader();
-    reader.onload = e => {
-      const img = new Image();
-      img.src = e.target.result;
-
-      img.onload = () => {
-        const canvas = document.createElement("canvas");
-
-        const maxWidth = 1280; // Reduz bem o tamanho
-        const scale = maxWidth / img.width;
-
-        canvas.width = maxWidth;
-        canvas.height = img.height * scale;
-
-        const ctx = canvas.getContext("2d");
-        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-
-        canvas.toBlob(
-          blob => resolve(blob),
-          "image/jpeg",
-          0.7 // qualidade da compressão
-        );
+  /* COMPRESSÃO DA IMAGEM */
+  function compressImage(file) {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onload = e => {
+        const img = new Image();
+        img.src = e.target.result;
+        img.onload = () => {
+          const canvas = document.createElement("canvas");
+          const maxWidth = 1280;
+          const scale = maxWidth / img.width;
+          canvas.width = maxWidth;
+          canvas.height = img.height * scale;
+          const ctx = canvas.getContext("2d");
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          canvas.toBlob(
+            blob => resolve(blob),
+            "image/jpeg",
+            0.7
+          );
+        };
       };
-    };
-    reader.readAsDataURL(file);
-  });
-}
-
-/* GEOLOCATION */
-document.getElementById('btnGeo').onclick = () => {
-  const gps = document.getElementById('gps');
-  gps.value = "Capturando localização...";
-
-  navigator.geolocation.getCurrentPosition(
-    pos => gps.value = pos.coords.latitude + ", " + pos.coords.longitude,
-    err => gps.value = "Erro ao obter localização"
-  );
-};
-
-/* FILE PREVIEW */
-document.getElementById('file').onchange = e => {
-  const file = e.target.files[0];
-  const prev = document.getElementById('preview');
-  if (file && file.type.startsWith("image/")) {
-    prev.src = URL.createObjectURL(file);
-    prev.style.display = "block";
-  } else {
-    prev.style.display = "none";
+      reader.readAsDataURL(file);
+    });
   }
-};
 
-/* ➤ ENVIO COM COMPRESSÃO AUTOMÁTICA */
-document.getElementById('llForm').onsubmit = async e => {
-  e.preventDefault();
+  /* GEO */
+  document.getElementById('btnGeo').onclick = () => {
+    const gps = document.getElementById('gps');
+    gps.value = "Capturando localização...";
+    navigator.geolocation.getCurrentPosition(
+      pos => gps.value = pos.coords.latitude + ", " + pos.coords.longitude,
+      err => gps.value = "Erro ao obter localização"
+    );
+  };
 
-  const fileInput = document.getElementById("file");
-  const file = fileInput.files[0];
+  /* PREVIEW */
+  document.getElementById('file').onchange = e => {
+    const file = e.target.files[0];
+    const prev = document.getElementById('preview');
+    if (file && file.type.startsWith("image/")) {
+      prev.src = URL.createObjectURL(file);
+      prev.style.display = "block";
+    } else {
+      prev.style.display = "none";
+    }
+  };
 
-  // 🔥 COMPRESSÃO AUTOMÁTICA
-  const compressedBlob = await compressImage(file);
-  const compressedFile = new File([compressedBlob], "foto_comprimida.jpg", { type: "image/jpeg" });
+  /* SUBMIT */
+  document.getElementById('llForm').onsubmit = async e => {
+    e.preventDefault();
 
-  const fd = new FormData();
+    const fileInput = document.getElementById("file");
+    const file = fileInput.files[0];
 
-  // substitui apenas a imagem
-  fd.append("arquivo", compressedFile);
+    const compressedBlob = await compressImage(file);
+    const compressedFile = new File([compressedBlob], "foto_comprimida.jpg", { type: "image/jpeg" });
 
-  // inclui o resto dos campos
-  const fields = ["equipe","base","componente","servicoll","medidor","condutor","almaaco","acessocaminhao","endereco","gps","observacao"];
-  fields.forEach(id => fd.append(id, document.getElementById(id).value));
+    const fd = new FormData();
+    fd.append("arquivo", compressedFile);
 
-  const resp = await fetch(SUBMIT_URL, { method: "POST", body: fd });
+    const fields = [
+      "equipe","base","componente","servicoll","medidor","condutor",
+      "almaaco","acessocaminhao","endereco","gps","observacao"
+    ];
 
-  if (resp.ok) {
-    alert("Registro LL enviado com sucesso!");
-    llForm.reset();
-    preview.style.display = "none";
-  } else {
-    const txt = await resp.text();
-    alert("Erro ao enviar: " + txt);
-  }
-};
+    fields.forEach(id => fd.append(id, document.getElementById(id).value));
+
+    const resp = await fetch(SUBMIT_URL, { method: "POST", body: fd });
+
+    if (resp.ok) {
+      alert("Registro LL enviado com sucesso!");
+      llForm.reset();
+      preview.style.display = "none";
+    } else {
+      const txt = await resp.text();
+      alert("Erro ao enviar: " + txt);
+    }
+  };
 </script>
 
 </body>
