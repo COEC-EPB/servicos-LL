@@ -76,15 +76,14 @@
 <div class="card">
   <h1>FORMULÁRIO - SERVIÇOS LL</h1>
 
-  <form id="llForm" autocomplete="off">
+  <form id="llForm" autocomplete="off" enctype="multipart/form-data">
 
-    <!-- CAMPOS -->
-    <div><label>1. Equipe *</label><input id="equipe" required></div>
+    <div><label>1. Equipe *</label><input id="equipe" name="equipe" required></div>
 
     <div class="row">
       <div>
         <label>2. Base *</label>
-        <select id="base" required>
+        <select id="base" name="base" required>
           <option value="">Selecione...</option>
           <option>João Pessoa</option>
           <option>Campina Grande</option>
@@ -95,14 +94,14 @@
 
       <div>
         <label>3. Componente *</label>
-        <input id="componente" required>
+        <input id="componente" name="componente" required>
       </div>
     </div>
 
     <div class="row">
       <div>
         <label>4. Serviço LL *</label>
-        <select id="servicoll" required>
+        <select id="servicoll" name="servicoll" required>
           <option value="">Selecione...</option>
           <option>Inspeção</option>
           <option>Instalação</option>
@@ -113,19 +112,19 @@
 
       <div>
         <label>5. Medidor *</label>
-        <input id="medidor" required>
+        <input id="medidor" name="medidor" required>
       </div>
     </div>
 
     <div class="row">
       <div>
         <label>6. Condutor *</label>
-        <input id="condutor" required>
+        <input id="condutor" name="condutor" required>
       </div>
 
       <div>
         <label>7. Alma de Aço *</label>
-        <select id="almaaço" required>
+        <select id="almaaço" name="almaaço" required>
           <option>Sim</option>
           <option>Não</option>
           <option>Não Verificado</option>
@@ -136,7 +135,7 @@
     <div class="row">
       <div>
         <label>8. Acesso caminhão *</label>
-        <select id="acessocaminhao" required>
+        <select id="acessocaminhao" name="acessocaminhao" required>
           <option>Sim</option>
           <option>Não</option>
         </select>
@@ -144,21 +143,26 @@
 
       <div>
         <label>9. Endereço *</label>
-        <input id="endereco" required>
+        <input id="endereco" name="endereco" required>
       </div>
     </div>
 
     <div>
       <label>10. Arquivo + Localização *</label>
-      <input id="file" type="file" accept="*" required>
+
+      <!-- nome CORRETO -->
+      <input id="file" name="arquivo" type="file" accept="*" required>
+
       <button type="button" id="btnGeo">Obter Geolocalização</button>
-      <input id="gps" readonly placeholder="Coordenadas aparecerão aqui" />
+
+      <input id="gps" name="gps" readonly placeholder="Coordenadas aparecerão aqui" />
+
       <img id="preview" style="max-height:200px; margin-top:10px; display:none;" />
     </div>
 
     <div>
       <label>11. Observação</label>
-      <textarea id="observacao" rows="3"></textarea>
+      <textarea id="observacao" name="observacao" rows="3"></textarea>
     </div>
 
     <button id="btnSubmit">Enviar Registro LL</button>
@@ -196,19 +200,7 @@ document.getElementById('file').onchange = e => {
 document.getElementById('llForm').onsubmit = async e => {
   e.preventDefault();
 
-  const fd = new FormData();
-  fd.append("equipe", equipe.value);
-  fd.append("base", base.value);
-  fd.append("componente", componente.value);
-  fd.append("servicoll", servicoll.value);
-  fd.append("medidor", medidor.value);
-  fd.append("condutor", condutor.value);
-  fd.append("almaaço", almaaço.value);
-  fd.append("acessocaminhao", acessocaminhao.value);
-  fd.append("endereco", endereco.value);
-  fd.append("gps", gps.value);
-  fd.append("observacao", observacao.value);
-  fd.append("arquivo", file.files[0]);
+  const fd = new FormData(llForm);
 
   const resp = await fetch(SUBMIT_URL, { method: "POST", body: fd });
 
@@ -217,7 +209,8 @@ document.getElementById('llForm').onsubmit = async e => {
     llForm.reset();
     preview.style.display = "none";
   } else {
-    alert("Erro ao enviar");
+    const txt = await resp.text();
+    alert("Erro ao enviar: " + txt);
   }
 };
 </script>
