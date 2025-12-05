@@ -8,73 +8,83 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 
 <style>
-  :root {
-    --energisa-blue: #0097CE;
-    --energisa-blue-dark: #0079a6;
-    --energisa-orange: #F36F21;
-    --bg-soft: #eef6fa;
-    --bg-white: #ffffff;
-    --text-dark: #333;
-  }
+  /* 🔵 Caixa destacada para Upload + GPS */
+.local-box {
+  background: #f1faff;
+  border-left: 5px solid var(--energisa-blue);
+  padding: 15px;
+  border-radius: 10px;
+}
 
-  body {
-    font-family: "Segoe UI", Roboto, sans-serif;
-    background: var(--bg-soft);
-    margin: 0;
-  }
+/* Linha horizontal */
+.local-row {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
 
-  .card {
-    max-width: 900px;
-    margin: 30px auto;
-    padding: 28px;
-    background: var(--bg-white);
-    border-radius: 14px;
-    box-shadow: 0 6px 26px rgba(0,0,0,0.10);
-    border-top: 6px solid var(--energisa-orange);
-  }
+@media (max-width: 720px) {
+  .local-row { flex-direction: column; }
+}
 
-  h1 {
-    text-align: center;
-    color: var(--energisa-blue-dark);
-    margin-bottom: 20px;
-    font-size: 26px;
-    font-weight: 800;
-  }
+/* Upload */
+.local-upload input {
+  background: #fff;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #cfd8dc;
+}
 
-  form { display: grid; gap: 15px; }
-  label { font-weight: 600; margin-bottom: 4px; }
+.local-preview {
+  max-height: 160px;
+  margin-top: 10px;
+  display: none;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+}
 
-  input, select, textarea {
-    width: 100%;
-    padding: 12px;
-    border-radius: 8px;
-    border: 1px solid #cfd8dc;
-    font-size: 15px;
-  }
+/* GPS */
+.local-geo {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
 
-  .row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 18px;
-  }
-  @media(max-width: 720px) { .row { grid-template-columns: 1fr; } }
+/* 🔥 Botão estilizado */
+.geo-btn {
+  background: var(--energisa-orange);
+  color: white;
+  border: none;
+  padding: 12px;
+  font-size: 15px;
+  font-weight: 700;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  box-shadow: 0 3px 12px rgba(0,0,0,0.12);
+  transition: transform 0.1s ease-in-out;
+}
 
-  button {
-    background: var(--energisa-blue);
-    color: white;
-    border: none;
-    padding: 14px;
-    font-size: 16px;
-    font-weight: 700;
-    border-radius: 10px;
-    cursor: pointer;
-  }
+.geo-btn:hover {
+  transform: scale(1.03);
+}
 
-  #btnGeo {
-    margin-top: 8px;
-    background: var(--energisa-orange);
-  }
+.geo-btn i {
+  font-size: 18px;
+}
 
+/* Caixa das coordenadas */
+#gps {
+  background: #e8f6ff;
+  border: 1px solid #0097ce55;
+  padding: 12px;
+  border-radius: 10px;
+  font-weight: bold;
+  color: #0079a6;
+}
 </style>
 </head>
 <body>
@@ -153,17 +163,27 @@
       </div>
     </div>
 
-    <div>
-      <label>10. Arquivo + Localização *</label>
+    <div class="local-box">
+  <label>10. Arquivo + Localização *</label>
 
+  <div class="local-row">
+
+    <div class="local-upload">
       <input id="file" name="arquivo" type="file" accept="image/*" required>
-
-      <button type="button" id="btnGeo">Obter Geolocalização</button>
-
-      <input id="gps" name="gps" readonly placeholder="Coordenadas aparecerão aqui" required />
-
-      <img id="preview" style="max-height:200px; margin-top:10px; display:none;" />
+      <img id="preview" class="local-preview" />
     </div>
+
+    <div class="local-geo">
+      <button type="button" id="btnGeo" class="geo-btn">
+        <i class="bi bi-geo-alt-fill"></i> Obter Localização
+      </button>
+
+      <input id="gps" name="gps" readonly
+        placeholder="Coordenadas aparecerão aqui">
+    </div>
+
+  </div>
+</div>
 
     <div>
       <label>11. Observação</label>
