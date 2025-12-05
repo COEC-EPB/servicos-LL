@@ -69,6 +69,12 @@
     border-radius: 10px;
     cursor: pointer;
   }
+
+  #btnGeo {
+    margin-top: 8px;
+    background: var(--energisa-orange);
+  }
+
 </style>
 </head>
 <body>
@@ -150,12 +156,12 @@
     <div>
       <label>10. Arquivo + Localização *</label>
 
-      <!-- nome CORRETO -->
-      <input id="file" name="arquivo" type="file" accept="*" required>
+      <!-- O Worker espera name="arquivo" -->
+      <input id="file" name="arquivo" type="file" accept="image/*" required>
 
       <button type="button" id="btnGeo">Obter Geolocalização</button>
 
-      <input id="gps" name="gps" readonly placeholder="Coordenadas aparecerão aqui" />
+      <input id="gps" name="gps" readonly placeholder="Coordenadas aparecerão aqui" required />
 
       <img id="preview" style="max-height:200px; margin-top:10px; display:none;" />
     </div>
@@ -165,7 +171,7 @@
       <textarea id="observacao" name="observacao" rows="3"></textarea>
     </div>
 
-    <button id="btnSubmit">Enviar Registro LL</button>
+    <button id="btnSubmit" type="submit">Enviar Registro LL</button>
 
   </form>
 </div>
