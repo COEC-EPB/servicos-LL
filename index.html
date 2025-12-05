@@ -241,6 +241,35 @@
 </div>
 
 <script>
+
+  /* AUTO-SELEÇÃO DA BASE */
+const baseMap = {
+  "CPX": "Cruz do Peixe",
+  "CBD": "Cabedelo",
+  "MGB": "Mangabeira",
+  "PRT": "Paratibe",
+  "CDE": "Paratibe",
+  "LCN": "Paratibe",
+  "STR": "Santa Rita",
+  "JPS": "Sede",
+  "MMA": "Mamanguape",
+  "SPE": "Sapé",
+  "ITA": "Itabaiana",
+  "CAA": "Caaporã"
+};
+
+document.getElementById("equipe").addEventListener("input", () => {
+  const equipe = document.getElementById("equipe").value.trim();
+
+  if (equipe.length >= 3) {
+    const sigla = equipe.substring(0, 3).toUpperCase();
+    const baseSelect = document.getElementById("base");
+
+    if (baseMap[sigla]) {
+      baseSelect.value = baseMap[sigla];
+    }
+  }
+});
   const SUBMIT_URL = "https://withered-hat-347d.pedro-fillype.workers.dev/submit";
 
   /* COMPRESSÃO DA IMAGEM */
@@ -322,6 +351,7 @@
       alert("Erro ao enviar: " + txt);
     }
   };
+  
 </script>
 
 </body>
