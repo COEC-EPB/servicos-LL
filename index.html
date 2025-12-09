@@ -128,31 +128,33 @@
   <form id="llForm" autocomplete="off" enctype="multipart/form-data">
 
     <!-- EQUIPES -->
-    <div>
-      <label>1. Equipe *</label>
-      <select id="equipe" name="equipe" required>
-        <option value="">Selecione a Regional e a Base...</option>
-      </select>
-    </div>
+    <!-- REGIONAL / BASE -->
+<div class="row">
+  <div>
+    <label>1. Regional *</label>
+    <select id="regional" name="regional" required>
+      <option value="">Selecione...</option>
+      <option>CENTRO</option>
+      <option>LESTE</option>
+      <option>OESTE</option>
+    </select>
+  </div>
 
-    <div class="row">
-      <div>
-        <label>2. Regional *</label>
-        <select id="regional" name="regional" required>
-          <option value="">Selecione...</option>
-          <option>CENTRO</option>
-          <option>LESTE</option>
-          <option>OESTE</option>
-        </select>
-      </div>
+  <div>
+    <label>2. Base *</label>
+    <select id="base" name="base" required>
+      <option value="">Selecione...</option>
+    </select>
+  </div>
+</div>
 
-      <div>
-        <label>3. Base *</label>
-        <select id="base" name="base" required>
-          <option value="">Selecione...</option>
-        </select>
-      </div>
-    </div>
+<!-- EQUIPE -->
+<div>
+  <label>3. Equipe *</label>
+  <select id="equipe" name="equipe" required>
+    <option value="">Selecione a Regional e a Base...</option>
+  </select>
+</div>
 
     <div>
       <label>4. Componente *</label>
