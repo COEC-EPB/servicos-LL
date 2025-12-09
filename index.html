@@ -117,7 +117,6 @@
     color: #fff;
     white-space: nowrap;
   }
-
 </style>
 </head>
 
@@ -128,51 +127,41 @@
 
   <form id="llForm" autocomplete="off" enctype="multipart/form-data">
 
+    <!-- EQUIPES -->
     <div>
-    <label>1. Equipe *</label>
-    <select id="equipe" name="equipe" required>
-      <option value="">Selecione a Regional primeiro...</option>
-    </select>
-  </div>
+      <label>1. Equipe *</label>
+      <select id="equipe" name="equipe" required>
+        <option value="">Selecione a Regional e a Base...</option>
+      </select>
+    </div>
 
     <div class="row">
       <div>
         <label>2. Regional *</label>
         <select id="regional" name="regional" required>
           <option value="">Selecione...</option>
-          <option>Leste</option>
-          <option>Centro</option>
-          <option>Oeste</option>
+          <option>CENTRO</option>
+          <option>LESTE</option>
+          <option>OESTE</option>
         </select>
       </div>
 
-      <div class="row">
       <div>
-        <label>2. Base *</label>
+        <label>3. Base *</label>
         <select id="base" name="base" required>
           <option value="">Selecione...</option>
-          <option>Sede</option>
-          <option>Cabedelo</option>
-          <option>Cruz do Peixe</option>
-          <option>Santa Rita</option>
-          <option>Mangabeira</option>
-          <option>Paratibe</option>
-          <option>Itabaiana</option>
-          <option>Caaporã</option>
-          <option>Mamanguape</option>
-          <option>Sapé</option>
         </select>
       </div>
-      
-      <div>
-        <label>3. Componente *</label>
-        <input id="componente" name="componente" required>
-      </div>
+    </div>
+
+    <div>
+      <label>4. Componente *</label>
+      <input id="componente" name="componente" required>
     </div>
 
     <div class="row">
       <div>
-        <label>4. Serviço LL *</label>
+        <label>5. Serviço LL *</label>
         <select id="servicoll" name="servicoll" required>
           <option value="">Selecione...</option>
           <option>Substituição de isolador pino</option>
@@ -195,19 +184,19 @@
       </div>
 
       <div>
-        <label>5. Medidor *</label>
+        <label>6. Medidor *</label>
         <input id="medidor" name="medidor" required>
       </div>
     </div>
 
     <div class="row">
       <div>
-        <label>6. Condutor *</label>
+        <label>7. Condutor *</label>
         <input id="condutor" name="condutor" required>
       </div>
 
       <div>
-        <label>7. Alma de Aço *</label>
+        <label>8. Alma de Aço *</label>
         <select id="almaaco" name="almaaco" required>
           <option>Sim</option>
           <option>Não</option>
@@ -218,7 +207,7 @@
 
     <div class="row">
       <div>
-        <label>8. Acesso caminhão *</label>
+        <label>9. Acesso caminhão *</label>
         <select id="acessocaminhao" name="acessocaminhao" required>
           <option>Sim</option>
           <option>Não</option>
@@ -226,19 +215,17 @@
       </div>
 
       <div>
-        <label>9. Endereço *</label>
+        <label>10. Endereço *</label>
         <input id="endereco" name="endereco" required>
       </div>
     </div>
 
-    <!-- ARQUIVO + GEO LOCALIZAÇÃO -->
+    <!-- ARQUIVOS -->
     <div>
-      <label>10. Arquivo + Localização *</label>
+      <label>11. Arquivo + Localização *</label>
       <input id="file" name="arquivos" type="file" accept="image/*" multiple required>
 
-    <div id="previewBox" style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;"></div>
-
-      <img id="preview" style="max-height:200px; margin-top:10px; display:none;" />
+      <div id="previewBox" style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;"></div>
 
       <div class="geo-box">
         <div class="geo-row">
@@ -251,100 +238,84 @@
     </div>
 
     <div>
-      <label>11. Observação</label>
+      <label>12. Observação</label>
       <textarea id="observacao" name="observacao" rows="3"></textarea>
     </div>
 
     <button id="btnSubmit" type="submit">Enviar Registro LL</button>
+
   </form>
 </div>
 
+
 <script>
-
-  
-// ============================
-//  TABELA COMPLETA DE EQUIPES
-// ============================
-
-const equipesPorBase = {
-  "CENTRO": [
-"ABRSN02","ABRSN03","ACTSN01","ALGSN01","ARNSN01","ARNSN03","AROMO01","BQRSN01","BQRSN03",
-"CGDCE02","CGDCX01","CGDME04","CGDME05","CGDMO03","CGDMO04","CGDMO05","CGDMO06","CGDMO07",
-"CGDMO10","CGDMX01","CGDMX02","CGDMX03","CGDMX04","CGDSN02","CGDSN03","CGDSN04","CGDSN05",
-"CGDSN06","CGDSN07","CTECE01","CTEML01","CTESN01","ESPBT03","ESPCE01","ESPML01","GBACX01",
-"GBAME16","GBAMO11","GBAMO12","GBAMO13","GBASN02","GBASN05","GLTSN01","JZRBT01","JZRMO01",
-"JZRMO02","JZRSN01","LGSSN01","MLVSN01","MLVSN02","MNTBT01","MNTGB02","MNTMO01","MNTSN01",
-"PCISN01","PCISN50","PLVBT01","PXNCX01","SBRBT01","SBRML01","SLDSN01","SLNBT01","SLNBT03",
-"SLNCE01","SLNCR01","SLNCX02","SLNML01","SMEBT01","SMESN01","SMTSN01","UBZSN01"
-  ],
-
-  "LESTE": [
-"BTRSN01","CAASN02","CAASN03","CAASN04","CBDCR01","CBDGB01","CBDGB02","CBDSN01","CBDSN02",
-"CBDSN05","CBDSN06","CPXCE01","CPXCE03","CPXCX01","CPXCX02","CPXCX03","CPXCX04","CPXGB02",
-"CPXGB03","CPXME01","CPXME02","CPXSN02","GRHSN01","INGSN01","INGSN03","ITAGB01","ITAGB02",
-"ITASN01","ITASN03","ITASN05","JPSCE01","JPSCE02","JPSCE03","JPSCE04","JPSCE05","JPSCE06",
-"JPSCE07","JPSCE08","JPSCE09","JPSCE12","JPSCE13","JPSCE14","JPSCE15","JPSCE16","JPSCX01",
-"JPSCX04","JPSCX11","JPSCX15","JPSCX16","JPSCX18","JPSGB02","JPSGB03","JPSGB04","JPSGB05",
-"JPSGB09","JPSGB11","JPSGB13","JPSME01","JPSME02","JPSME03","JPSMX01","JPSMX02","JPSMX03",
-"JPSMX04","JPSMX05","JPSMX06","JPSMX07","JPSMX08","JPSMX09","JPSMX10","JPSSN04","JPSSN05",
-"LCNSN01","MAASN01","MAMCR01","MAMCX01","MAMGB01","MAMMO01","MAMSN01","MAMSN03","MGBCE01",
-"MGBCE02","MGBCE03","MGBCE04","MGBCR01","MGBCR03","MGBCX01","MGBCX02","MGBGB01","MGBGB02",
-"MGBGB04","MGBGB06","MGBGB07","MGBGB08","MGBGB10","MGBGB11","MGBGB14","MGBSN02","PRTCE01",
-"PRTCR03","PRTCX01","PRTCX02","PRTSN02","SPECR01","SPECR02","SPECX01","SPEGB01","SPEGB02",
-"SPESN01","SPESN02","STRCE01","STRCE03","STRCE04","STRCR01","STRCR02","STRCR03","STRCR05",
-"STRCX01","STRGB01","STRGB03","STRGB05","STRGB07","STRGB09","STRGB10"
-  ],
-
-  "OESTE": [
-"AGBSN01","BTFBT01","CJZBT30","CJZCR01","CJZGB02","CJZME01","CJZMO03","CJZMO04","CONBT30",
-"CONGB01","CONSN01","CRMSN01","CTRBT31","CTRGB02","CTRGB03","CTRMO01","CTRSN03","ITOBT31",
-"ITOCR01","ITOGB02","ITOGB03","ITOSN02","JRCSN01","MLTSN01","NOLSN01","PBLBT30","PBLSN03",
-"PBLSN08","PCOBT30","PCOCR01","PCOSN01","PRIBT31","PRISN02","PTSAD02","PTSCE01","PTSCR03",
-"PTSCX02","PTSGB01","PTSGB03","PTSGB04","PTSGB06","PTSGB07","PTSGB08","PTSGB09","PTSGB10",
-"PTSME01","PTSMO01","PTSMO03","PTSSN02","PTSSN03","PTSSN06","SBTBT30","SBTMO02","SBTSN03",
-"SBTSN09","SLZSN01","SPXBT30","SZAAD03","SZAAD04","SZAAD05","SZAME01","SZAME02","SZAME03",
-"SZAMO05","SZAMO06","TXRSN50","URNSN01"
-  ]
+/* ===========================================================
+      1. LISTA DE EQUIPES POR REGIONAL
+=========================================================== */
+const equipes = {
+  "CENTRO": [...],
+  "LESTE": [...],
+  "OESTE": [...]
 };
 
+/* ===========================================================
+      2. BASES POR REGIONAL
+=========================================================== */
+const basesPorRegional = {
+  "CENTRO": ["Sede","Santa Rita","Cruz do Peixe","Mangabeira","Paratibe"],
+  "LESTE": ["Cabedelo","Caaporã","Mamanguape","Sapé","Itabaiana"],
+  "OESTE": ["Itabaiana","Princesa Isabel","Patos","Sousa","Cajazeiras"]
+};
 
-// ======================================================================
-// QUANDO SELECIONAR A BASE → preenche automaticamente o select de equipes
-// ======================================================================
+/* ===========================================================
+      3. AUTO-PREENCHER "BASE" QUANDO SELECIONAR REGIONAL
+=========================================================== */
+document.getElementById("regional").addEventListener("change", () => {
+  const regional = document.getElementById("regional").value;
+  const base = document.getElementById("base");
 
-document.getElementById("regional").addEventListener("regional", () => {
-  const regional = document.getElementById("regional").value.trim().toUpperCase();
-  const equipeSelect = document.getElementById("equipe");
+  base.innerHTML = `<option value="">Selecione...</option>`;
 
-  equipeSelect.innerHTML = ""; // limpa
-
-  if (!equipesPorBase[regional]) {
-    equipeSelect.innerHTML = `<option value="">Nenhuma equipe encontrada</option>`;
-    return;
+  if (basesPorRegional[regional]) {
+    basesPorRegional[regional].forEach(b => {
+      const op = document.createElement("option");
+      op.value = b;
+      op.textContent = b;
+      base.appendChild(op);
+    });
   }
-
-  equipeSelect.innerHTML = `<option value="">Selecione...</option>`;
-
-  equipesPorBase[base].forEach(eq => {
-    const op = document.createElement("option");
-    op.value = eq;
-    op.textContent = eq;
-    equipeSelect.appendChild(op);
-  });
-
 });
 
-  /* AUTO-SELEÇÃO DA BASE */
+/* ===========================================================
+      4. CARREGAR EQUIPES QUANDO BASE FOR SELECIONADA
+=========================================================== */
+document.getElementById("base").addEventListener("change", () => {
+  const regional = document.getElementById("regional").value;
+  const equipe = document.getElementById("equipe");
+
+  equipe.innerHTML = `<option value="">Selecione...</option>`;
+
+  if (equipes[regional]) {
+    equipes[regional].forEach(eq => {
+      const op = document.createElement("option");
+      op.value = eq;
+      op.textContent = eq;
+      equipe.appendChild(op);
+    });
+  }
+});
+
+/* ===========================================================
+      5. MAPA PARA AUTO-IDENTIFICAR A BASE PELA SIGLA
+=========================================================== */
 const baseMap = {
   "CPX": "Cruz do Peixe",
   "CBD": "Cabedelo",
   "MGB": "Mangabeira",
   "PRT": "Paratibe",
-  "CDE": "Paratibe",
-  "LCN": "Paratibe",
   "STR": "Santa Rita",
   "JPS": "Sede",
-  "MMA": "Mamanguape",
+  "MAM": "Mamanguape",
   "SPE": "Sapé",
   "ITA": "Itabaiana",
   "CAA": "Caaporã"
@@ -352,21 +323,50 @@ const baseMap = {
 
 document.getElementById("equipe").addEventListener("input", () => {
   const equipe = document.getElementById("equipe").value.trim();
-
   if (equipe.length >= 3) {
-    const sigla = equipe.substring(0, 3).toUpperCase();
-    const baseSelect = document.getElementById("base");
-
+    const sigla = equipe.substring(0,3).toUpperCase();
     if (baseMap[sigla]) {
-      baseSelect.value = baseMap[sigla];
+      document.getElementById("base").value = baseMap[sigla];
     }
   }
 });
-  const SUBMIT_URL = "https://withered-hat-347d.pedro-fillype.workers.dev/submit";
 
-  /* COMPRESSÃO DA IMAGEM */
-  function compressImage(file) {
-  return new Promise((resolve) => {
+/* ===========================================================
+      6. PREVIEW DAS IMAGENS
+=========================================================== */
+document.getElementById('file').onchange = e => {
+  const files = e.target.files;
+  const preview = document.getElementById("previewBox");
+  preview.innerHTML = "";
+  [...files].forEach(f => {
+    if (f.type.startsWith("image/")) {
+      const img = document.createElement("img");
+      img.src = URL.createObjectURL(f);
+      img.style.maxHeight = "180px";
+      img.style.borderRadius = "8px";
+      img.style.boxShadow = "0 2px 8px rgba(0,0,0,0.3)";
+      preview.appendChild(img);
+    }
+  });
+};
+
+/* ===========================================================
+      7. GPS
+=========================================================== */
+document.getElementById('btnGeo').onclick = () => {
+  const gps = document.getElementById('gps');
+  gps.value = "Capturando localização...";
+  navigator.geolocation.getCurrentPosition(
+    pos => gps.value = pos.coords.latitude + ", " + pos.coords.longitude,
+    err => gps.value = "Erro ao obter localização"
+  );
+};
+
+/* ===========================================================
+      8. COMPRESSÃO DE IMAGENS
+=========================================================== */
+function compressImage(file) {
+  return new Promise(resolve => {
     const reader = new FileReader();
     reader.onload = e => {
       const img = new Image();
@@ -390,37 +390,15 @@ document.getElementById("equipe").addEventListener("input", () => {
   });
 }
 
-  /* GEO */
-  document.getElementById('btnGeo').onclick = () => {
-    const gps = document.getElementById('gps');
-    gps.value = "Capturando localização...";
-    navigator.geolocation.getCurrentPosition(
-      pos => gps.value = pos.coords.latitude + ", " + pos.coords.longitude,
-      err => gps.value = "Erro ao obter localização"
-    );
-  };
+/* ===========================================================
+      9. SUBMIT
+=========================================================== */
+const SUBMIT_URL = "https://withered-hat-347d.pedro-fillype.workers.dev/submit";
 
-  /* PREVIEW */
-  document.getElementById('file').onchange = e => {
-  const files = e.target.files;
-  const previewBox = document.getElementById('previewBox');
-  previewBox.innerHTML = "";
-
-  [...files].forEach(file => {
-    if (file.type.startsWith("image/")) {
-      const img = document.createElement("img");
-      img.src = URL.createObjectURL(file);
-      img.style.maxHeight = "180px";
-      img.style.borderRadius = "8px";
-      img.style.boxShadow = "0 2px 8px rgba(0,0,0,0.3)";
-      previewBox.appendChild(img);
-    }
-  });
-};
-  /* SUBMIT */
-  document.getElementById('llForm').onsubmit = async e => {
+document.getElementById("llForm").onsubmit = async e => {
   e.preventDefault();
 
+  const fd = new FormData();
   const files = document.getElementById("file").files;
 
   if (!files.length) {
@@ -428,37 +406,26 @@ document.getElementById("equipe").addEventListener("input", () => {
     return;
   }
 
-  const fd = new FormData();
-
-  // Compressão de cada imagem
   for (let i = 0; i < files.length; i++) {
     const blob = await compressImage(files[i]);
-    const compressed = new File([blob], `foto_${i+1}.jpg`, { type: "image/jpeg" });
-    fd.append("arquivos", compressed);  // ← envia em lista
+    fd.append("arquivos", new File([blob], `foto_${i+1}.jpg`, { type: "image/jpeg" }));
   }
 
-  // Campos de texto
-  const fields = [
-    "equipe","base","componente","servicoll","medidor","condutor",
-    "almaaco","acessocaminhao","endereco","gps","observacao"
-  ];
-  fields.forEach(id => fd.append(id, document.getElementById(id).value));
+  ["equipe","regional","base","componente","servicoll","medidor","condutor",
+   "almaaco","acessocaminhao","endereco","gps","observacao"]
+  .forEach(id => fd.append(id, document.getElementById(id).value));
 
-  // Enviar
-  const resp = await fetch(SUBMIT_URL, {
-    method: "POST",
-    body: fd
-  });
+  const r = await fetch(SUBMIT_URL, { method:"POST", body: fd });
 
-  if (resp.ok) {
+  if (r.ok) {
     alert("Registro LL enviado com sucesso!");
     llForm.reset();
     previewBox.innerHTML = "";
   } else {
-    alert("Erro ao enviar: " + await resp.text());
+    alert("Erro ao enviar: " + await r.text());
   }
 };
-  
+
 </script>
 
 </body>
