@@ -131,11 +131,22 @@
     <div>
     <label>1. Equipe *</label>
     <select id="equipe" name="equipe" required>
-      <option value="">Selecione a base primeiro...</option>
+      <option value="">Selecione a Regional primeiro...</option>
     </select>
   </div>
 
     <div class="row">
+      <div>
+        <label>2. Regional *</label>
+        <select id="regional" name="regional" required>
+          <option value="">Selecione...</option>
+          <option>Leste</option>
+          <option>Centro</option>
+          <option>Oeste</option>
+        </select>
+      </div>
+
+      <div class="row">
       <div>
         <label>2. Base *</label>
         <select id="base" name="base" required>
@@ -301,13 +312,13 @@ const equipesPorBase = {
 // QUANDO SELECIONAR A BASE → preenche automaticamente o select de equipes
 // ======================================================================
 
-document.getElementById("base").addEventListener("change", () => {
-  const base = document.getElementById("base").value.trim().toUpperCase();
+document.getElementById("regional").addEventListener("regional", () => {
+  const regional = document.getElementById("regional").value.trim().toUpperCase();
   const equipeSelect = document.getElementById("equipe");
 
   equipeSelect.innerHTML = ""; // limpa
 
-  if (!equipesPorBase[base]) {
+  if (!equipesPorBase[regional]) {
     equipeSelect.innerHTML = `<option value="">Nenhuma equipe encontrada</option>`;
     return;
   }
