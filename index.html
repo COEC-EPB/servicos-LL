@@ -1,21 +1,44 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Serviços LL - Linha Viva Leve</title>
 <meta charset="UTF-8">
 <title>Registros Linha Viva</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <!-- ÍCONES -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
 
 <style>
+  :root {
+    --energisa-blue: #0097CE;
+    --energisa-blue-dark: #0079a6;
+    --energisa-orange: #F36F21;
+    --bg-soft: #eef6fa;
+    --bg-white: #ffffff;
+    --text-dark: #333;
+  }
+
   body {
+    font-family: "Segoe UI", Roboto, sans-serif;
+    background: var(--bg-soft);
     font-family: Arial, sans-serif;
     background: #e9eef3;
     margin: 0;
     padding: 0;
   }
 
+  .card {
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 28px;
+    background: var(--bg-white);
+    border-radius: 14px;
+    box-shadow: 0 6px 26px rgba(0,0,0,0.10);
+    border-top: 6px solid var(--energisa-orange);
   .header {
     background: #0097CE;
     padding: 20px;
@@ -23,10 +46,19 @@
     box-shadow: 0 2px 6px rgba(0,0,0,0.25);
   }
 
+  h1 {
+    text-align: center;
+    color: var(--energisa-blue-dark);
+    margin-bottom: 20px;
+    font-size: 26px;
+    font-weight: 800;
   .header h2 {
     margin: 0 0 10px;
   }
 
+  form {
+    display: grid;
+    gap: 15px;
   .filtros {
     display: flex;
     flex-wrap: wrap;
@@ -34,6 +66,10 @@
     margin-top: 10px;
   }
 
+  label {
+    font-weight: 600;
+    margin-bottom: 4px;
+    display:block;
   .filtros input, .filtros select {
     padding: 8px;
     border-radius: 6px;
@@ -41,15 +77,29 @@
     min-width: 180px;
   }
 
+  input, select, textarea {
+    width: 100%;
+    padding: 12px;
   .box {
     background: white;
     padding: 20px;
     border-radius: 8px;
+    border: 1px solid #cfd8dc;
+    font-size: 15px;
+    box-sizing: border-box;
+  }
+
+  .row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
     max-width: 1400px;
     margin: 25px auto;
     box-shadow: 0 2px 6px rgba(0,0,0,0.2);
   }
 
+  @media(max-width: 720px) {
+    .row { grid-template-columns: 1fr; }
   table {
     width: 100%;
     border-collapse: collapse;
@@ -58,21 +108,49 @@
     overflow: hidden;
   }
 
+  button {
+    background: var(--energisa-blue);
   th {
     background: #0097CE;
     color: white;
+    border: none;
+    padding: 14px;
+    font-size: 16px;
+    font-weight: 700;
+    border-radius: 10px;
+    cursor: pointer;
     padding: 10px;
   }
 
+  /* --- BLOCO DE LOCALIZAÇÃO --- */
+  .geo-box {
+    background: var(--energisa-blue);
+    padding: 14px;
+    border-radius: 12px;
+    color: white;
+    margin-top: 10px;
   td {
     border-bottom: 1px solid #ddd;
     padding: 10px;
   }
 
+  .geo-row {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 12px;
+    align-items: center;
   tr:hover {
     background: #f1f8ff;
   }
 
+  #gps {
+    background: #ffffff;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--text-dark);
   a.foto {
     background: #0097CE;
     color: white;
@@ -83,14 +161,150 @@
     margin-bottom: 3px;
   }
 
+  #btnGeo {
+    background: var(--energisa-orange);
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    color: #fff;
+    white-space: nowrap;
   a.foto:hover {
     background: #0079a6;
   }
+
+  /* preview thumbnails */
+  #previewBox img { max-height: 120px; border-radius: 8px; object-fit: cover; }
 </style>
 </head>
 
 <body>
 
+<div class="card">
+  <h1>FORMULÁRIO - SERVIÇOS LL</h1>
+
+  <form id="llForm" autocomplete="off" enctype="multipart/form-data">
+
+    <!-- REGIONAL / BASE -->
+    <div class="row">
+      <div>
+        <label>1. Regional *</label>
+        <select id="regional" name="regional" required>
+          <option value="">Selecione...</option>
+          <option value="LESTE">LESTE</option>
+          <option value="CENTRO">CENTRO</option>
+          <option value="OESTE">OESTE</option>
+        </select>
+      </div>
+
+      <div>
+        <label>2. Base *</label>
+        <select id="base" name="base" required disabled>
+          <option value="">Selecione a regional primeiro...</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- EQUIPE -->
+    <div>
+      <label>3. Equipe *</label>
+      <select id="equipe" name="equipe" required disabled>
+        <option value="">Selecione a base primeiro...</option>
+      </select>
+    </div>
+
+    <div>
+      <label>4. Componente *</label>
+      <input id="componente" name="componente" required>
+    </div>
+
+    <div class="row">
+      <div>
+        <label>5. Serviço LL *</label>
+        <select id="servicoll" name="servicoll" required>
+          <option value="">Selecione...</option>
+          <option>Substituição de isolador pino</option>
+          <option>Substituição de isolador de ancoragem</option>
+          <option>Instalação de cabo protegido / bypass</option>
+          <option>Reparo com emenda pré-formada</option>
+          <option>Ponto quente em bucha secundária</option>
+          <option>Abertura de jumper sem carga</option>
+          <option>Fechamento de jumper sem carga</option>
+          <option>Substituir chave fusível / faca</option>
+          <option>Retirar by-pass</option>
+          <option>Instalação de espaçadores</option>
+          <option>Amarração Grinfa</option>
+          <option>Retirar ninho</option>
+          <option>Retirar pipa/objetos</option>
+          <option>Instalação de elastômetro</option>
+          <option>Poda de árvore em contato</option>
+          <option>Mudança de TAP</option>
+        </select>
+      </div>
+
+      <div>
+        <label>6. Medidor *</label>
+        <input id="medidor" name="medidor" required>
+      </div>
+    </div>
+
+    <div class="row">
+      <div>
+        <label>7. Condutor *</label>
+        <input id="condutor" name="condutor" required>
+      </div>
+
+      <div>
+        <label>8. Alma de Aço *</label>
+        <select id="almaaco" name="almaaco" required>
+          <option>Sim</option>
+          <option>Não</option>
+          <option>Não Verificado</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="row">
+      <div>
+        <label>9. Acesso caminhão *</label>
+        <select id="acessocaminhao" name="acessocaminhao" required>
+          <option>Sim</option>
+          <option>Não</option>
+        </select>
+      </div>
+
+      <div>
+        <label>10. Endereço *</label>
+        <input id="endereco" name="endereco" required>
+      </div>
+    </div>
+
+    <!-- ARQUIVOS -->
+    <div>
+      <label>11. Arquivo + Localização *</label>
+      <input id="file" name="arquivos" type="file" accept="image/*" multiple required>
+
+      <div id="previewBox" style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;"></div>
+
+      <div class="geo-box">
+        <div class="geo-row">
+          <button type="button" id="btnGeo">
+            <i class="bi bi-geo-alt-fill"></i> Localizar
+          </button>
+          <input id="gps" name="gps" readonly placeholder="Coordenadas aparecerão aqui" required />
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <label>12. Observação</label>
+      <textarea id="observacao" name="observacao" rows="3"></textarea>
+    </div>
+
+    <button id="btnSubmit" type="submit">Enviar Registro LL</button>
+
+  </form>
 <div class="header">
   <h2>📋 Registros Linha Viva</h2>
   <div class="filtros">
@@ -121,13 +335,30 @@
 </div>
 
 <script>
+/* =============================================================
+   BASES POR REGIONAL
+   ============================================================= */
+const basesPorRegional = {
+  "LESTE": [
+    "Cruz do Peixe", "Cabedelo", "Mangabeira", "Paratibe",
+    "Santa Rita", "João Pessoa", "Mamanguape", "Sapé",
+    "Itabaiana", "Caaporã"
+  ],
+  "CENTRO": [
+    "Campina Grande", "Borborema", "Esperança",
+    "Guarabira", "Monteiro"
+  ],
+  "OESTE": [
+    "Itaporanga", "Patos", "Sousa",
+    "Catolé do Rocha", "Princesa Isabel", "Cajazeiras"
+  ]
 const API_URL = "https://withered-hat-347d.pedro-fillype.workers.dev/listar";
 let registros = [];
 
 // 🧭 REGIONAL AUTOMÁTICA (mesmo mapa do Worker)
 const regioesPorBase = {
   "JOÃO PESSOA": "LESTE",
-  "CRUZ DO PEIXE": "LESTE",
+  "CRUZ DO PEIXE": "LESTE,
   "ITABAIANA": "LESTE",
   "MAMANGUAPE": "LESTE",
   "MANGABEIRA": "LESTE",
@@ -135,22 +366,184 @@ const regioesPorBase = {
   "CABEDELO": "LESTE",
   "SANTA RITA": "LESTE",
   "CAAPORA": "LESTE",
-  "SAPÉ": "LESTE"
+  "SAPÉ": "LESTE",
+  "PARATIBE": "LESTE",
+  "PARATIBE": "LESTE",
 };
 
 async function carregar() {
   const resp = await fetch(API_URL);
   registros = await resp.json();
 
+/* =============================================================
+   EQUIPES ORGANIZADAS POR BASE
+   ============================================================= */
+const equipesPorBase = {
+  /* LESTE */
+  "Cruz do Peixe": ["CPXCE01","CPXCE02","CPXCE03",
+      "CPXCX01","CPXCX02","CPXCX03","CPXCX04",
+      "CPXGB02","CPXGB03",
+      "CPXME01","CPXME02",
+      "CPXML01",
+      "CPXSN02","CPXSN03","CPXSN04","CPXSN70"],
+  "Cabedelo": ["CBDCR01", "CBDCX01", "CBDGB01", "CBDGB02",
+      "CBDML01", "CBDSN01", "CBDSN02", "CBDSN05",
+      "CBDSN06", "CBDSN70"],
+  "Mangabeira": ["MGBCE01","MGBCE02","MGBCE03","MGBCE04","MGBCR01","MGBCR03","MGBCX01","MGBCX02","MGBGB01","MGBGB02","MGBGB04","MGBGB06","MGBGB07","MGBGB08","MGBGB10","MGBGB11","MGBGB14","MGBSN02"],
+  "Paratibe": ["PRTCE01","PRTCE02",
+      "PRTCR03",
+      "PRTCX01","PRTCX02","PRTCX03",
+      "PRTML01",
+      "PRTSN01","PRTSN02","CDECX01", "CDESN03"],
+  "Santa Rita": ["STRCE01","STRCE03","STRCE04","STRCR01","STRCR02","STRCR03","STRCR05","STRCX01","STRGB01","STRGB03","STRGB05","STRGB07","STRGB09","STRGB10","LCNSN01"],
+  "João Pessoa": ["JPSCE01","JPSCE02","JPSCE03","JPSCE04","JPSCE05","JPSCE06","JPSCE07","JPSCE08","JPSCE09","JPSCE12","JPSCE13","JPSCE14","JPSCE15","JPSCE16","JPSCX01","JPSCX04","JPSCX11","JPSCX15","JPSCX16","JPSCX18","JPSGB02","JPSGB03","JPSGB04","JPSGB05","JPSGB09","JPSGB11","JPSGB13","JPSME01","JPSME02","JPSME03","JPSMX01","JPSMX02","JPSMX03","JPSMX04","JPSMX05","JPSMX06","JPSMX07","JPSMX08","JPSMX09","JPSMX10","JPSSN04","JPSSN05"],
+  "Mamanguape": ["MAMCR01","MAMCX01","MAMGB01","MAMML02","MAMMO01",
+      "MAMSN01","MAMSN03","MAMSN50","JCUCX01","JCUSN01"],
+  "Sapé": ["SPECR01","SPECR02","SPECX01","SPEGB01","SPEGB02","SPESN01","SPESN02"],
+  "Itabaiana": ["GRHSN01","INGSN01","INGSN03","INGSN50",
+      "ITAGB01","ITAGB02","ITAML01",
+      "ITASN01","ITASN03","ITASN05","ITASN70"
+    ],
+  "Caaporã": ["CAAML01", "CAASN02", "CAASN03", "CAASN04", "CAASN70"],
+
+  /* CENTRO */
+  "Campina Grande": ["CGDCE02","CGDCX01","CGDME04","CGDME05","CGDMO03","CGDMO04","CGDMO05","CGDMO06","CGDMO07","CGDMO10","CGDMX01","CGDMX02","CGDMX03","CGDMX04","CGDSN02","CGDSN03","CGDSN04","CGDSN05","CGDSN06","CGDSN07"],
+  "Borborema": ["BQRSN01","BQRSN03"],
+  "Esperança": ["ESPBT03","ESPCE01","ESPML01"],
+  "Guarabira": ["GBACX01","GBAME16","GBAMO11","GBAMO12","GBAMO13","GBASN02","GBASN05"],
+  "Monteiro": ["MNTBT01","MNTGB02","MNTMO01","MNTSN01"],
+
+  /* OESTE */
+  "Itaporanga": ["ITOBT31","ITOCR01","ITOGB02","ITOGB03","ITOSN02"],
+  "Patos": ["PTSAD02","PTSCE01","PTSCR03","PTSCX02","PTSGB01","PTSGB03","PTSGB04","PTSGB06","PTSGB07","PTSGB08","PTSGB09","PTSGB10","PTSME01","PTSMO01","PTSMO03","PTSSN02","PTSSN03","PTSSN06"],
+  "Sousa": ["SZAAD03","SZAAD04","SZAAD05","SZAME01","SZAME02","SZAME03","SZAMO05","SZAMO06"],
+  "Catolé do Rocha": ["CTRBT31","CTRGB02","CTRGB03","CTRMO01","CTRSN03"],
+  "Princesa Isabel": ["PRIBT31","PRISN02"],
+  "Cajazeiras": ["CJZBT30","CJZCR01","CJZGB02","CJZME01","CJZMO03","CJZMO04"]
+};
+
+
+/* =============================================================
+   AO MUDAR REGIONAL → CARREGA BASES
+   ============================================================= */
+const regionalEl = document.getElementById("regional");
+const baseEl = document.getElementById("base");
+const equipeEl = document.getElementById("equipe");
+
+regionalEl.addEventListener("change", () => {
+  const regional = regionalEl.value;
+  // reset base & equipe
+  baseEl.innerHTML = "<option value=''>Selecione a base...</option>";
+  baseEl.disabled = true;
+  equipeEl.innerHTML = "<option value=''>Selecione a base primeiro...</option>";
+  equipeEl.disabled = true;
+
+  if (!regional) return;
   preencherFiltros();
   atualizarTabela();
 }
 
+  const bases = basesPorRegional[regional];
+  if (!bases) return;
 function preencherFiltros() {
   const baseSel = document.getElementById("filtroBase");
   const bases = [...new Set(registros.map(r => r.base))];
 
   bases.forEach(b => {
+    const op = document.createElement("option");
+    op.value = b;
+    op.textContent = b;
+    baseEl.appendChild(op);
+  });
+
+  baseEl.disabled = false;
+});
+
+
+/* =============================================================
+   AO MUDAR BASE → CARREGA EQUIPES
+   ============================================================= */
+baseEl.addEventListener("change", () => {
+  const base = baseEl.value;
+  equipeEl.innerHTML = "<option value=''>Selecione...</option>";
+  equipeEl.disabled = true;
+
+  if (!base) return;
+
+  const equipes = equipesPorBase[base];
+  if (!equipes) {
+    // nenhuma equipe definida para essa base
+    equipeEl.innerHTML = "<option value=''>Nenhuma equipe encontrada</option>";
+    return;
+  }
+
+  equipes.forEach(eq => {
+    const op = document.createElement("option");
+    op.value = eq;
+    op.textContent = eq;
+    equipeEl.appendChild(op);
+  });
+
+  equipeEl.disabled = false;
+});
+
+
+/* ===========================================================
+   PREVIEW DAS IMAGENS
+   =========================================================== */
+document.getElementById('file').onchange = e => {
+  const files = e.target.files;
+  const preview = document.getElementById("previewBox");
+  preview.innerHTML = "";
+  [...files].forEach(f => {
+    if (f.type.startsWith("image/")) {
+      const img = document.createElement("img");
+      img.src = URL.createObjectURL(f);
+      img.style.maxHeight = "120px";
+      img.style.borderRadius = "8px";
+      img.style.boxShadow = "0 2px 8px rgba(0,0,0,0.3)";
+      preview.appendChild(img);
+    }
+  });
+};
+
+/* ===========================================================
+   GPS
+   =========================================================== */
+document.getElementById('btnGeo').onclick = () => {
+  const gps = document.getElementById('gps');
+  gps.value = "Capturando localização...";
+  navigator.geolocation.getCurrentPosition(
+    pos => gps.value = pos.coords.latitude + ", " + pos.coords.longitude,
+    err => gps.value = "Erro ao obter localização"
+  );
+};
+
+/* ===========================================================
+   COMPRESSÃO DE IMAGENS
+   =========================================================== */
+function compressImage(file) {
+  return new Promise(resolve => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      const img = new Image();
+      img.src = e.target.result;
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        const maxWidth = 1280;
+        const scale = Math.min(1, maxWidth / img.width);
+        canvas.width = img.width * scale;
+        canvas.height = img.height * scale;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        canvas.toBlob(
+          blob => resolve(blob),
+          "image/jpeg",
+          0.7
+        );
+      };
+    };
+    reader.readAsDataURL(file);
     const opt = document.createElement("option");
     opt.value = b;
     opt.textContent = b;
@@ -158,6 +551,32 @@ function preencherFiltros() {
   });
 }
 
+/* ===========================================================
+   SUBMIT
+   =========================================================== */
+const SUBMIT_URL = "https://withered-hat-347d.pedro-fillype.workers.dev/submit";
+
+document.getElementById("llForm").onsubmit = async e => {
+  e.preventDefault();
+
+  const fd = new FormData();
+  const files = document.getElementById("file").files;
+
+  if (!files.length) {
+    alert("Selecione ao menos uma imagem.");
+    return;
+  }
+
+  for (let i = 0; i < files.length; i++) {
+    const blob = await compressImage(files[i]);
+    fd.append("arquivos", new File([blob], `foto_${i+1}.jpg`, { type: "image/jpeg" }));
+  }
+
+  ["equipe","regional","base","componente","servicoll","medidor","condutor",
+   "almaaco","acessocaminhao","endereco","gps","observacao"]
+  .forEach(id => fd.append(id, document.getElementById(id).value));
+
+  const r = await fetch(SUBMIT_URL, { method:"POST", body: fd });
 function atualizarTabela() {
   const tbody = document.querySelector("#tabela tbody");
   tbody.innerHTML = "";
@@ -196,6 +615,19 @@ function atualizarTabela() {
     });
 }
 
+  if (r.ok) {
+    alert("Registro LL enviado com sucesso!");
+    llForm.reset();
+    document.getElementById("previewBox").innerHTML = "";
+    // reset selects to initial state
+    baseEl.innerHTML = "<option value=''>Selecione a regional primeiro...</option>";
+    baseEl.disabled = true;
+    equipeEl.innerHTML = "<option value=''>Selecione a base primeiro...</option>";
+    equipeEl.disabled = true;
+  } else {
+    alert("Erro ao enviar: " + await r.text());
+  }
+};
 document.getElementById("filtroData").addEventListener("change", atualizarTabela);
 document.getElementById("filtroBase").addEventListener("change", atualizarTabela);
 
@@ -203,4 +635,3 @@ carregar();
 </script>
 
 </body>
-</html>
