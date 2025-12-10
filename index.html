@@ -240,7 +240,7 @@
 
       <div class="geo-box">
         <div class="geo-row">
-          <button type="button" id="btnGeo">
+          <button type="button" id="btnGeo" required>
             <i class="bi bi-geo-alt-fill"></i> Localizar
           </button>
           <input id="gps" name="gps" readonly placeholder="Coordenadas aparecerão aqui" required />
@@ -455,9 +455,9 @@ document.getElementById("llForm").onsubmit = async e => {
     fd.append("arquivos", new File([blob], `foto_${i+1}.jpg`, { type: "image/jpeg" }));
   }
 
-  ["equipe","regional","base","componente","servicoll","medidor","condutor",
-   "almaaco","acessocaminhao","endereco","gps","observacao"]
-  .forEach(id => fd.append(id, document.getElementById(id).value));
+  ["equipe","regional","base","data","componente","servicoll","medidor","condutor",
+ "almaaco","acessocaminhao","endereco","gps","observacao"]
+.forEach(id => fd.append(id, document.getElementById(id).value));
 
   const r = await fetch(SUBMIT_URL, { method:"POST", body: fd });
 
