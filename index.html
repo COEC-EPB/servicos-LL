@@ -4,13 +4,9 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Serviços LL - Linha Viva Leve</title>
-<meta charset="UTF-8">
-<title>Registros Linha Viva</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <!-- ÍCONES -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
 
 <style>
   :root {
@@ -25,10 +21,7 @@
   body {
     font-family: "Segoe UI", Roboto, sans-serif;
     background: var(--bg-soft);
-    font-family: Arial, sans-serif;
-    background: #e9eef3;
     margin: 0;
-    padding: 0;
   }
 
   .card {
@@ -39,11 +32,6 @@
     border-radius: 14px;
     box-shadow: 0 6px 26px rgba(0,0,0,0.10);
     border-top: 6px solid var(--energisa-orange);
-  .header {
-    background: #0097CE;
-    padding: 20px;
-    color: white;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.25);
   }
 
   h1 {
@@ -52,37 +40,22 @@
     margin-bottom: 20px;
     font-size: 26px;
     font-weight: 800;
-  .header h2 {
-    margin: 0 0 10px;
   }
 
   form {
     display: grid;
     gap: 15px;
-  .filtros {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 10px;
   }
 
   label {
     font-weight: 600;
     margin-bottom: 4px;
     display:block;
-  .filtros input, .filtros select {
-    padding: 8px;
-    border-radius: 6px;
-    border: none;
-    min-width: 180px;
   }
 
   input, select, textarea {
     width: 100%;
     padding: 12px;
-  .box {
-    background: white;
-    padding: 20px;
     border-radius: 8px;
     border: 1px solid #cfd8dc;
     font-size: 15px;
@@ -93,25 +66,14 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 18px;
-    max-width: 1400px;
-    margin: 25px auto;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
   }
 
   @media(max-width: 720px) {
     .row { grid-template-columns: 1fr; }
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 15px;
-    border-radius: 8px;
-    overflow: hidden;
   }
 
   button {
     background: var(--energisa-blue);
-  th {
-    background: #0097CE;
     color: white;
     border: none;
     padding: 14px;
@@ -119,7 +81,6 @@
     font-weight: 700;
     border-radius: 10px;
     cursor: pointer;
-    padding: 10px;
   }
 
   /* --- BLOCO DE LOCALIZAÇÃO --- */
@@ -129,9 +90,6 @@
     border-radius: 12px;
     color: white;
     margin-top: 10px;
-  td {
-    border-bottom: 1px solid #ddd;
-    padding: 10px;
   }
 
   .geo-row {
@@ -139,8 +97,6 @@
     grid-template-columns: auto 1fr;
     gap: 12px;
     align-items: center;
-  tr:hover {
-    background: #f1f8ff;
   }
 
   #gps {
@@ -151,14 +107,6 @@
     font-weight: 600;
     font-size: 15px;
     color: var(--text-dark);
-  a.foto {
-    background: #0097CE;
-    color: white;
-    padding: 6px 10px;
-    border-radius: 6px;
-    text-decoration: none;
-    display: inline-block;
-    margin-bottom: 3px;
   }
 
   #btnGeo {
@@ -170,8 +118,6 @@
     cursor: pointer;
     color: #fff;
     white-space: nowrap;
-  a.foto:hover {
-    background: #0079a6;
   }
 
   /* preview thumbnails */
@@ -305,34 +251,8 @@
     <button id="btnSubmit" type="submit">Enviar Registro LL</button>
 
   </form>
-<div class="header">
-  <h2>📋 Registros Linha Viva</h2>
-  <div class="filtros">
-    <input type="date" id="filtroData" />
-    <select id="filtroBase">
-      <option value="">Filtrar por Base</option>
-    </select>
-  </div>
 </div>
 
-<div class="box">
-  <table id="tabela">
-    <thead>
-      <tr>
-        <th>Data</th>
-        <th>Equipe</th>
-        <th>Base</th>
-        <th>Regional</th>
-        <th>Componente</th>
-        <th>Serviço</th>
-        <th>Endereço</th>
-        <th>GPS</th>
-        <th>Fotos</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
-</div>
 
 <script>
 /* =============================================================
@@ -352,59 +272,24 @@ const basesPorRegional = {
     "Itaporanga", "Patos", "Sousa",
     "Catolé do Rocha", "Princesa Isabel", "Cajazeiras"
   ]
-const API_URL = "https://withered-hat-347d.pedro-fillype.workers.dev/listar";
-let registros = [];
-
-// 🧭 REGIONAL AUTOMÁTICA (mesmo mapa do Worker)
-const regioesPorBase = {
-  "JOÃO PESSOA": "LESTE",
-  "CRUZ DO PEIXE": "LESTE,
-  "ITABAIANA": "LESTE",
-  "MAMANGUAPE": "LESTE",
-  "MANGABEIRA": "LESTE",
-  "PARATIBE": "LESTE",
-  "CABEDELO": "LESTE",
-  "SANTA RITA": "LESTE",
-  "CAAPORA": "LESTE",
-  "SAPÉ": "LESTE",
-  "PARATIBE": "LESTE",
-  "PARATIBE": "LESTE",
 };
 
-async function carregar() {
-  const resp = await fetch(API_URL);
-  registros = await resp.json();
 
 /* =============================================================
    EQUIPES ORGANIZADAS POR BASE
    ============================================================= */
 const equipesPorBase = {
   /* LESTE */
-  "Cruz do Peixe": ["CPXCE01","CPXCE02","CPXCE03",
-      "CPXCX01","CPXCX02","CPXCX03","CPXCX04",
-      "CPXGB02","CPXGB03",
-      "CPXME01","CPXME02",
-      "CPXML01",
-      "CPXSN02","CPXSN03","CPXSN04","CPXSN70"],
-  "Cabedelo": ["CBDCR01", "CBDCX01", "CBDGB01", "CBDGB02",
-      "CBDML01", "CBDSN01", "CBDSN02", "CBDSN05",
-      "CBDSN06", "CBDSN70"],
+  "Cruz do Peixe": ["CPXCE01","CPXCE03","CPXCX01","CPXCX02","CPXCX03","CPXCX04","CPXGB02","CPXGB03","CPXME01","CPXME02","CPXSN02"],
+  "Cabedelo": ["CBDCR01","CBDGB01","CBDGB02","CBDSN01","CBDSN02","CBDSN05","CBDSN06"],
   "Mangabeira": ["MGBCE01","MGBCE02","MGBCE03","MGBCE04","MGBCR01","MGBCR03","MGBCX01","MGBCX02","MGBGB01","MGBGB02","MGBGB04","MGBGB06","MGBGB07","MGBGB08","MGBGB10","MGBGB11","MGBGB14","MGBSN02"],
-  "Paratibe": ["PRTCE01","PRTCE02",
-      "PRTCR03",
-      "PRTCX01","PRTCX02","PRTCX03",
-      "PRTML01",
-      "PRTSN01","PRTSN02","CDECX01", "CDESN03"],
-  "Santa Rita": ["STRCE01","STRCE03","STRCE04","STRCR01","STRCR02","STRCR03","STRCR05","STRCX01","STRGB01","STRGB03","STRGB05","STRGB07","STRGB09","STRGB10","LCNSN01"],
+  "Paratibe": ["PRTCE01","PRTCR03","PRTCX01","PRTCX02","PRTSN02"],
+  "Santa Rita": ["STRCE01","STRCE03","STRCE04","STRCR01","STRCR02","STRCR03","STRCR05","STRCX01","STRGB01","STRGB03","STRGB05","STRGB07","STRGB09","STRGB10"],
   "João Pessoa": ["JPSCE01","JPSCE02","JPSCE03","JPSCE04","JPSCE05","JPSCE06","JPSCE07","JPSCE08","JPSCE09","JPSCE12","JPSCE13","JPSCE14","JPSCE15","JPSCE16","JPSCX01","JPSCX04","JPSCX11","JPSCX15","JPSCX16","JPSCX18","JPSGB02","JPSGB03","JPSGB04","JPSGB05","JPSGB09","JPSGB11","JPSGB13","JPSME01","JPSME02","JPSME03","JPSMX01","JPSMX02","JPSMX03","JPSMX04","JPSMX05","JPSMX06","JPSMX07","JPSMX08","JPSMX09","JPSMX10","JPSSN04","JPSSN05"],
-  "Mamanguape": ["MAMCR01","MAMCX01","MAMGB01","MAMML02","MAMMO01",
-      "MAMSN01","MAMSN03","MAMSN50","JCUCX01","JCUSN01"],
+  "Mamanguape": ["MAASN01","MAMCR01","MAMCX01","MAMGB01","MAMMO01","MAMSN01","MAMSN03"],
   "Sapé": ["SPECR01","SPECR02","SPECX01","SPEGB01","SPEGB02","SPESN01","SPESN02"],
-  "Itabaiana": ["GRHSN01","INGSN01","INGSN03","INGSN50",
-      "ITAGB01","ITAGB02","ITAML01",
-      "ITASN01","ITASN03","ITASN05","ITASN70"
-    ],
-  "Caaporã": ["CAAML01", "CAASN02", "CAASN03", "CAASN04", "CAASN70"],
+  "Itabaiana": ["ITAGB01","ITAGB02","ITASN01","ITASN03","ITASN05"],
+  "Caaporã": ["CAASN02","CAASN03","CAASN04"],
 
   /* CENTRO */
   "Campina Grande": ["CGDCE02","CGDCX01","CGDME04","CGDME05","CGDMO03","CGDMO04","CGDMO05","CGDMO06","CGDMO07","CGDMO10","CGDMX01","CGDMX02","CGDMX03","CGDMX04","CGDSN02","CGDSN03","CGDSN04","CGDSN05","CGDSN06","CGDSN07"],
@@ -439,15 +324,9 @@ regionalEl.addEventListener("change", () => {
   equipeEl.disabled = true;
 
   if (!regional) return;
-  preencherFiltros();
-  atualizarTabela();
-}
 
   const bases = basesPorRegional[regional];
   if (!bases) return;
-function preencherFiltros() {
-  const baseSel = document.getElementById("filtroBase");
-  const bases = [...new Set(registros.map(r => r.base))];
 
   bases.forEach(b => {
     const op = document.createElement("option");
@@ -544,10 +423,6 @@ function compressImage(file) {
       };
     };
     reader.readAsDataURL(file);
-    const opt = document.createElement("option");
-    opt.value = b;
-    opt.textContent = b;
-    baseSel.appendChild(opt);
   });
 }
 
@@ -577,43 +452,6 @@ document.getElementById("llForm").onsubmit = async e => {
   .forEach(id => fd.append(id, document.getElementById(id).value));
 
   const r = await fetch(SUBMIT_URL, { method:"POST", body: fd });
-function atualizarTabela() {
-  const tbody = document.querySelector("#tabela tbody");
-  tbody.innerHTML = "";
-
-  const filtroData = document.getElementById("filtroData").value;
-  const filtroBase = document.getElementById("filtroBase").value;
-
-  registros
-    .filter(r => !filtroData || r.data?.startsWith(filtroData))
-    .filter(r => !filtroBase || r.base === filtroBase)
-    .forEach(reg => {
-      const tr = document.createElement("tr");
-
-      // Calcula a regional automaticamente
-      const regional = regioesPorBase[reg.base?.toUpperCase()] || "NÃO ENCONTRADA";
-
-      tr.innerHTML = `
-        <td>${reg.data || "-"}</td>
-        <td>${reg.equipe}</td>
-        <td>${reg.base}</td>
-        <td>${regional}</td>
-        <td>${reg.componente}</td>
-        <td>${reg.servicoll}</td>
-        <td>${reg.endereco}</td>
-        <td>${reg.gps}</td>
-        <td>
-          ${
-            reg.fotosUrl?.length
-              ? reg.fotosUrl.map(url => `<a class="foto" href="${url}" target="_blank">📷 Foto</a>`).join("<br>")
-              : "-"
-          }
-        </td>
-      `;
-
-      tbody.appendChild(tr);
-    });
-}
 
   if (r.ok) {
     alert("Registro LL enviado com sucesso!");
@@ -628,10 +466,8 @@ function atualizarTabela() {
     alert("Erro ao enviar: " + await r.text());
   }
 };
-document.getElementById("filtroData").addEventListener("change", atualizarTabela);
-document.getElementById("filtroBase").addEventListener("change", atualizarTabela);
 
-carregar();
 </script>
 
 </body>
+</html>
