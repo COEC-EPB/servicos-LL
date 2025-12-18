@@ -321,9 +321,10 @@ const basesPorRegional = {
   ]
 };
 
-// data atual
+/* =============================================================
+   DATA ATUAL AUTOMÁTICA
+   ============================================================= */
 document.getElementById("data").value = new Date().toISOString().slice(0,10);
-
 
 /* =============================================================
    EQUIPES POR BASE
@@ -354,6 +355,19 @@ const equipesPorBase = {
   "Cajazeiras": ["CJZCR01","CJZME01","CJZMO03","CJZMO04","SUPERVISÃO"]
 };
 
+/* =============================================================
+   CALCULAR REGIONAL A PARTIR DA BASE (FIX DEFINITIVO)
+   ============================================================= */
+function calcularRegionalPorBase(base) {
+  if (!base) return "NÃO ENCONTRADA";
+
+  for (const regional in basesPorRegional) {
+    if (basesPorRegional[regional].includes(base)) {
+      return regional;
+    }
+  }
+  return "NÃO ENCONTRADA";
+}
 
 /* =============================================================
    REGIONAL → BASE
@@ -382,7 +396,6 @@ regionalEl.addEventListener("change", () => {
   baseEl.disabled = false;
 });
 
-
 /* =============================================================
    BASE → EQUIPE
    ============================================================= */
@@ -404,7 +417,6 @@ baseEl.addEventListener("change", () => {
   equipeEl.disabled = false;
 });
 
-
 /* =============================================================
    PREVIEW DAS IMAGENS
    ============================================================= */
@@ -422,7 +434,6 @@ document.getElementById("file").onchange = e => {
   });
 };
 
-
 /* =============================================================
    GPS
    ============================================================= */
@@ -434,7 +445,6 @@ document.getElementById("btnGeo").onclick = () => {
     () => gps.value = "Erro ao obter localização"
   );
 };
-
 
 /* =============================================================
    COMPRESSÃO DE IMAGEM
@@ -450,7 +460,7 @@ function compressImage(file) {
         const scale = Math.min(1, 1280 / img.width);
         canvas.width = img.width * scale;
         canvas.height = img.height * scale;
-        canvas.getContext("2d").drawImage(img,0,0,canvas.width,canvas.height);
+        canvas.getContext("2d").drawImage(img, 0, 0, canvas.width, canvas.height);
         canvas.toBlob(b => resolve(b), "image/jpeg", 0.7);
       };
     };
@@ -458,9 +468,8 @@ function compressImage(file) {
   });
 }
 
-
 /* =============================================================
-   SUBMIT (AJUSTADO – NÃO ENVIA REGIONAL VAZIA)
+   SUBMIT + OVERLAY ENVIANDO
    ============================================================= */
 const SUBMIT_URL = "https://withered-hat-347d.pedro-fillype.workers.dev/submit";
 
@@ -485,7 +494,7 @@ document.getElementById("llForm").onsubmit = async e => {
     }
 
     const campos = [
-      "regional","base","equipe","data","componente","servicoll",
+      "base","equipe","data","componente","servicoll",
       "medidor","condutor","almaaco","acessocaminhao",
       "endereco","gps","observacao"
     ];
@@ -496,8 +505,11 @@ document.getElementById("llForm").onsubmit = async e => {
       fd.append(id, el.value);
     }
 
-    const r = await fetch(SUBMIT_URL, { method:"POST", body: fd });
+    // REGIONAL CALCULADA CORRETAMENTE
+    const regionalCalculada = calcularRegionalPorBase(baseEl.value);
+    fd.append("regional", regionalCalculada);
 
+    const r = await fetch(SUBMIT_URL, { method:"POST", body: fd });
     if (!r.ok) throw await r.text();
 
     alert("Registro LL enviado com sucesso!");
@@ -514,5 +526,6 @@ document.getElementById("llForm").onsubmit = async e => {
   }
 };
 </script>
+
 </body>
 </html>
