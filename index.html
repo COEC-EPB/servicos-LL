@@ -266,31 +266,30 @@
    ============================================================= */
 const basesPorRegional = {
   "LESTE": [
-    "Cruz do Peixe", "Cabedelo", "Mangabeira", "Paratibe",
-    "Santa Rita", "João Pessoa", "Mamanguape", "Sapé",
-    "Itabaiana", "Caaporã"
+    "Cruz do Peixe","Cabedelo","Mangabeira","Paratibe",
+    "Santa Rita","João Pessoa","Mamanguape","Sapé",
+    "Itabaiana","Caaporã"
   ],
   "CENTRO": [
-    "Campina Grande", "Borborema", "Esperança",
-    "Guarabira", "Monteiro"
+    "Campina Grande","Borborema","Esperança",
+    "Guarabira","Monteiro"
   ],
   "OESTE": [
-    "Itaporanga", "Patos", "Sousa",
-    "Catolé do Rocha", "Princesa Isabel", "Cajazeiras"
+    "Itaporanga","Patos","Sousa",
+    "Catolé do Rocha","Princesa Isabel","Cajazeiras"
   ]
 };
 
-  // Preenche automaticamente com a data atual
-document.getElementById("data").value = new Date().toISOString().slice(0, 10);
+// data atual
+document.getElementById("data").value = new Date().toISOString().slice(0,10);
 
 
 /* =============================================================
-   EQUIPES ORGANIZADAS POR BASE
+   EQUIPES POR BASE
    ============================================================= */
 const equipesPorBase = {
-  /* LESTE */
   "Cruz do Peixe": ["CPXCE01","CPXCE03","CPXME01","CPXME02","CPXSN02","CPXML01","CPXSN52","SUPERVISÃO"],
-  "Cabedelo": ["CBDCE01","CBDCE02","CBDCE04","CBDCE03","CBDCR01","CBDSN01","CBDSN02","CBDSN05","CBDSN06","CBDML01","CBDLL01","CBDSN70","SUPERVISÃO"],
+  "Cabedelo": ["CBDCE01","CBDCE02","CBDCE03","CBDCE04","CBDCR01","CBDSN01","CBDSN02","CBDSN05","CBDSN06","CBDML01","CBDLL01","CBDSN70","SUPERVISÃO"],
   "Mangabeira": ["MGBCE01","MGBCE02","MGBCE03","MGBCE04","MGBCR01","MGBCR03","MGBSN02","MGBML01","SUPERVISÃO"],
   "Paratibe": ["PRTCE01","PRTCR03","PRTSN02","PRTML01","SUPERVISÃO"],
   "Santa Rita": ["STRCE01","STRCE03","STRCE04","STRCR01","STRCR02","STRCR03","STRCR05","STRML01","SUPERVISÃO"],
@@ -300,14 +299,12 @@ const equipesPorBase = {
   "Itabaiana": ["ITAML01","ITASN01","ITASN03","ITASN05","SUPERVISÃO"],
   "Caaporã": ["CAASN02","CAASN03","CAASN04","SUPERVISÃO"],
 
-  /* CENTRO */
   "Campina Grande": ["CGDCE02","CGDCX01","CGDME04","CGDME05","CGDMO03","CGDMO04","CGDMO05","CGDMO06","CGDMO07","CGDMO10","CGDSN02","CGDSN03","CGDSN04","CGDSN05","CGDSN06","CGDSN07","SUPERVISÃO"],
   "Borborema": ["BQRSN01","BQRSN03","SUPERVISÃO"],
   "Esperança": ["ESPBT03","ESPCE01","ESPML01","SUPERVISÃO"],
   "Guarabira": ["GBAME16","GBAMO11","GBAMO12","GBAMO13","GBASN02","GBASN05","SUPERVISÃO"],
   "Monteiro": ["MNTMO01","MNTSN01","SUPERVISÃO"],
 
-  /* OESTE */
   "Itaporanga": ["ITOCR01","ITOSN02","SUPERVISÃO"],
   "Patos": ["PTSAD02","PTSCE01","PTSCR03","PTSME01","PTSMO01","PTSMO03","PTSSN02","PTSSN03","PTSSN06","SUPERVISÃO"],
   "Sousa": ["SZAAD03","SZAAD04","SZAAD05","SZAME01","SZAME02","SZAME03","SZAMO05","SZAMO06","SUPERVISÃO"],
@@ -318,7 +315,7 @@ const equipesPorBase = {
 
 
 /* =============================================================
-   AO MUDAR REGIONAL → CARREGA BASES
+   REGIONAL → BASE
    ============================================================= */
 const regionalEl = document.getElementById("regional");
 const baseEl = document.getElementById("base");
@@ -326,18 +323,15 @@ const equipeEl = document.getElementById("equipe");
 
 regionalEl.addEventListener("change", () => {
   const regional = regionalEl.value;
-  // reset base & equipe
+
   baseEl.innerHTML = "<option value=''>Selecione a base...</option>";
-  baseEl.disabled = true;
   equipeEl.innerHTML = "<option value=''>Selecione a base primeiro...</option>";
+  baseEl.disabled = true;
   equipeEl.disabled = true;
 
   if (!regional) return;
 
-  const bases = basesPorRegional[regional];
-  if (!bases) return;
-
-  bases.forEach(b => {
+  basesPorRegional[regional].forEach(b => {
     const op = document.createElement("option");
     op.value = b;
     op.textContent = b;
@@ -349,23 +343,17 @@ regionalEl.addEventListener("change", () => {
 
 
 /* =============================================================
-   AO MUDAR BASE → CARREGA EQUIPES
+   BASE → EQUIPE
    ============================================================= */
 baseEl.addEventListener("change", () => {
   const base = baseEl.value;
+
   equipeEl.innerHTML = "<option value=''>Selecione...</option>";
   equipeEl.disabled = true;
 
-  if (!base) return;
+  if (!base || !equipesPorBase[base]) return;
 
-  const equipes = equipesPorBase[base];
-  if (!equipes) {
-    // nenhuma equipe definida para essa base
-    equipeEl.innerHTML = "<option value=''>Nenhuma equipe encontrada</option>";
-    return;
-  }
-
-  equipes.forEach(eq => {
+  equipesPorBase[base].forEach(eq => {
     const op = document.createElement("option");
     op.value = eq;
     op.textContent = eq;
@@ -376,40 +364,40 @@ baseEl.addEventListener("change", () => {
 });
 
 
-/* ===========================================================
+/* =============================================================
    PREVIEW DAS IMAGENS
-   =========================================================== */
-document.getElementById('file').onchange = e => {
-  const files = e.target.files;
+   ============================================================= */
+document.getElementById("file").onchange = e => {
   const preview = document.getElementById("previewBox");
   preview.innerHTML = "";
-  [...files].forEach(f => {
-    if (f.type.startsWith("image/")) {
-      const img = document.createElement("img");
-      img.src = URL.createObjectURL(f);
-      img.style.maxHeight = "120px";
-      img.style.borderRadius = "8px";
-      img.style.boxShadow = "0 2px 8px rgba(0,0,0,0.3)";
-      preview.appendChild(img);
-    }
+
+  [...e.target.files].forEach(f => {
+    if (!f.type.startsWith("image/")) return;
+    const img = document.createElement("img");
+    img.src = URL.createObjectURL(f);
+    img.style.maxHeight = "120px";
+    img.style.borderRadius = "8px";
+    preview.appendChild(img);
   });
 };
 
-/* ===========================================================
+
+/* =============================================================
    GPS
-   =========================================================== */
-document.getElementById('btnGeo').onclick = () => {
-  const gps = document.getElementById('gps');
+   ============================================================= */
+document.getElementById("btnGeo").onclick = () => {
+  const gps = document.getElementById("gps");
   gps.value = "Capturando localização...";
   navigator.geolocation.getCurrentPosition(
-    pos => gps.value = pos.coords.latitude + ", " + pos.coords.longitude,
-    err => gps.value = "Erro ao obter localização"
+    pos => gps.value = `${pos.coords.latitude}, ${pos.coords.longitude}`,
+    () => gps.value = "Erro ao obter localização"
   );
 };
 
-/* ===========================================================
-   COMPRESSÃO DE IMAGENS
-   =========================================================== */
+
+/* =============================================================
+   COMPRESSÃO DE IMAGEM
+   ============================================================= */
 function compressImage(file) {
   return new Promise(resolve => {
     const reader = new FileReader();
@@ -418,26 +406,21 @@ function compressImage(file) {
       img.src = e.target.result;
       img.onload = () => {
         const canvas = document.createElement("canvas");
-        const maxWidth = 1280;
-        const scale = Math.min(1, maxWidth / img.width);
+        const scale = Math.min(1, 1280 / img.width);
         canvas.width = img.width * scale;
         canvas.height = img.height * scale;
-        const ctx = canvas.getContext("2d");
-        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-        canvas.toBlob(
-          blob => resolve(blob),
-          "image/jpeg",
-          0.7
-        );
+        canvas.getContext("2d").drawImage(img,0,0,canvas.width,canvas.height);
+        canvas.toBlob(b => resolve(b), "image/jpeg", 0.7);
       };
     };
     reader.readAsDataURL(file);
   });
 }
 
-/* ===========================================================
-   SUBMIT
-   =========================================================== */
+
+/* =============================================================
+   SUBMIT (AJUSTADO – NÃO ENVIA REGIONAL VAZIA)
+   ============================================================= */
 const SUBMIT_URL = "https://withered-hat-347d.pedro-fillype.workers.dev/submit";
 
 document.getElementById("llForm").onsubmit = async e => {
@@ -453,12 +436,23 @@ document.getElementById("llForm").onsubmit = async e => {
 
   for (let i = 0; i < files.length; i++) {
     const blob = await compressImage(files[i]);
-    fd.append("arquivos", new File([blob], `foto_${i+1}.jpg`, { type: "image/jpeg" }));
+    fd.append("arquivos", new File([blob], `foto_${i+1}.jpg`, { type:"image/jpeg" }));
   }
 
-  ["equipe","regional","base","data","componente","servicoll","medidor","condutor",
- "almaaco","acessocaminhao","endereco","gps","observacao"]
-.forEach(id => fd.append(id, document.getElementById(id).value));
+  const campos = [
+    "regional","base","equipe","data","componente","servicoll",
+    "medidor","condutor","almaaco","acessocaminhao",
+    "endereco","gps","observacao"
+  ];
+
+  for (const id of campos) {
+    const el = document.getElementById(id);
+    if (!el || !el.value) {
+      alert(`Campo obrigatório não preenchido: ${id}`);
+      return;
+    }
+    fd.append(id, el.value);
+  }
 
   const r = await fetch(SUBMIT_URL, { method:"POST", body: fd });
 
@@ -466,17 +460,12 @@ document.getElementById("llForm").onsubmit = async e => {
     alert("Registro LL enviado com sucesso!");
     llForm.reset();
     document.getElementById("previewBox").innerHTML = "";
-    // reset selects to initial state
-    baseEl.innerHTML = "<option value=''>Selecione a regional primeiro...</option>";
     baseEl.disabled = true;
-    equipeEl.innerHTML = "<option value=''>Selecione a base primeiro...</option>";
     equipeEl.disabled = true;
   } else {
     alert("Erro ao enviar: " + await r.text());
   }
 };
-
 </script>
-
 </body>
 </html>
