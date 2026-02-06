@@ -645,10 +645,17 @@ document.getElementById("llForm").onsubmit = async e => {
     ];
 
     for (const id of camposComuns) {
-      const el = document.getElementById(id);
-      if (!el || !el.value) throw `Campo obrigatório não preenchido: ${id}`;
-      fd.append(id, el.value);
-    }
+  const el = document.getElementById(id);
+  if (!el) continue;
+
+  // ✅ Só valida se o campo for required no HTML
+  if (el.required && !String(el.value || "").trim()) {
+    throw `Campo obrigatório não preenchido: ${id}`;
+  }
+
+  // ✅ Envia mesmo vazio (opcionais)
+  fd.append(id, el.value || "");
+}
 
     // modo escolhido
     fd.append("tipo_servico", tipoServicoSelecionado);
