@@ -374,6 +374,30 @@
   </div>
 
 <script>
+
+  const acoesTopo = document.getElementById("acoesTopo");
+const btnVoltarMenu = document.getElementById("btnVoltarMenu");
+
+function voltarParaMenu() {
+  // limpa tudo
+  form.reset();
+  document.getElementById("previewBox").innerHTML = "";
+  baseEl.disabled = true;
+  equipeEl.disabled = true;
+
+  // limpa modo
+  tipoServicoSelecionado = "";
+
+  // volta UI
+  form.classList.add("hidden");
+  badge.classList.add("hidden");
+  acoesTopo.classList.add("hidden");
+  menuTipo.classList.remove("hidden");
+}
+
+btnVoltarMenu.onclick = voltarParaMenu;
+
+  
 /* =============================================================
    BASES POR REGIONAL
    ============================================================= */
@@ -444,6 +468,7 @@ function abrirFormulario(modo) {
   menuTipo.classList.add("hidden");
   form.classList.remove("hidden");
   badge.classList.remove("hidden");
+  acoesTopo.classList.remove("hidden");
 
   if (modo === "LINHA_VIVA") {
     badge.textContent = "Modo selecionado: LINHA VIVA";
