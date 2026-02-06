@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Serviços LL - Linha Viva Leve</title>
 
-<!-- ÍCONES -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 
 <style>
@@ -42,16 +41,9 @@
     font-weight: 800;
   }
 
-  form {
-    display: grid;
-    gap: 15px;
-  }
+  form { display: grid; gap: 15px; }
 
-  label {
-    font-weight: 600;
-    margin-bottom: 4px;
-    display:block;
-  }
+  label { font-weight: 600; margin-bottom: 4px; display:block; }
 
   input, select, textarea {
     width: 100%;
@@ -81,6 +73,28 @@
     font-weight: 700;
     border-radius: 10px;
     cursor: pointer;
+  }
+
+  /* --- MENU INICIAL --- */
+  .menu {
+    display: grid;
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+  .menu button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 16px;
+  }
+  .menu .btn-viva { background: var(--energisa-blue); }
+  .menu .btn-morta { background: var(--energisa-orange); }
+  .menu .sub {
+    text-align: center;
+    color: #555;
+    font-size: 14px;
+    margin-top: -6px;
   }
 
   /* --- BLOCO DE LOCALIZAÇÃO --- */
@@ -119,212 +133,248 @@
     color: #fff;
     white-space: nowrap;
   }
+
   /* OVERLAY ENVIANDO */
-#overlayEnvio {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.45);
-  display: none;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-}
+  #overlayEnvio {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+  }
 
-#overlayEnvio .box {
-  background: #fff;
-  padding: 30px 40px;
-  border-radius: 14px;
-  text-align: center;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.35);
-}
+  #overlayEnvio .box {
+    background: #fff;
+    padding: 30px 40px;
+    border-radius: 14px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+  }
 
-#overlayEnvio .spinner {
-  width: 42px;
-  height: 42px;
-  border: 4px solid #e0e0e0;
-  border-top: 4px solid #0097CE;
-  border-radius: 50%;
-  margin: 0 auto 15px;
-  animation: spin 0.8s linear infinite;
-}
+  #overlayEnvio .spinner {
+    width: 42px;
+    height: 42px;
+    border: 4px solid #e0e0e0;
+    border-top: 4px solid #0097CE;
+    border-radius: 50%;
+    margin: 0 auto 15px;
+    animation: spin 0.8s linear infinite;
+  }
 
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
+  @keyframes spin { to { transform: rotate(360deg); } }
 
-  /* preview thumbnails */
   #previewBox img { max-height: 120px; border-radius: 8px; object-fit: cover; }
+
+  /* esconder / mostrar */
+  .hidden { display: none !important; }
+
+  /* “badge” do modo selecionado */
+  .mode-badge {
+    display: inline-block;
+    margin: 0 auto 10px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: #eef6fa;
+    border: 1px solid #cfe6f2;
+    color: #0b5c7d;
+    font-weight: 700;
+    font-size: 13px;
+  }
 </style>
 </head>
 
 <body>
   <div id="overlayEnvio">
-  <div class="box">
-    <div class="spinner"></div>
-    <strong>Enviando registro…</strong>
-    <div style="font-size:14px; margin-top:6px; color:#555">
-      Aguarde alguns segundos
+    <div class="box">
+      <div class="spinner"></div>
+      <strong>Enviando registro…</strong>
+      <div style="font-size:14px; margin-top:6px; color:#555">
+        Aguarde alguns segundos
+      </div>
     </div>
   </div>
-</div>
 
-<div class="card">
-  <h1>FORMULÁRIO - SERVIÇOS LL</h1>
+  <div class="card">
+    <h1>FORMULÁRIO - SERVIÇOS</h1>
 
-  <form id="llForm" autocomplete="off" enctype="multipart/form-data">
-
-    <!-- REGIONAL / BASE -->
-    <div class="row">
-      <div>
-        <label>1. Regional *</label>
-        <select id="regional" name="regional" required>
-          <option value="">Selecione...</option>
-          <option value="LESTE">LESTE</option>
-          <option value="CENTRO">CENTRO</option>
-          <option value="OESTE">OESTE</option>
-        </select>
-      </div>
-
-      <div>
-        <label>2. Base *</label>
-        <select id="base" name="base" required disabled>
-          <option value="">Selecione a regional primeiro...</option>
-        </select>
-      </div>
+    <!-- MENU INICIAL -->
+    <div id="menuTipo" class="menu">
+      <button type="button" class="btn-viva" id="btnLinhaViva">
+        <i class="bi bi-lightning-charge-fill"></i> Serviço Linha Viva
+      </button>
+      <button type="button" class="btn-morta" id="btnLinhaMorta">
+        <i class="bi bi-tools"></i> Serviço Linha Morta
+      </button>
+      <div class="sub">Escolha o tipo de serviço para abrir o formulário</div>
     </div>
 
-    <!-- EQUIPE -->
-    <div>
-      <label>3. Equipe *</label>
-      <select id="equipe" name="equipe" required disabled>
-        <option value="">Selecione a base primeiro...</option>
-      </select>
-    </div>
+    <!-- BADGE DO MODO -->
+    <div id="modeBadge" class="mode-badge hidden"></div>
 
-    <div>
-  <label>4. Data *</label>
-  <input type="date" id="data" name="data" required>
-  </div>
+    <form id="llForm" class="hidden" autocomplete="off" enctype="multipart/form-data">
 
-    <div>
-      <label>5. Componente *</label>
-      <input id="componente" name="componente" required>
-    </div>
+      <!-- REGIONAL / BASE -->
+      <div class="row">
+        <div>
+          <label>1. Regional *</label>
+          <select id="regional" name="regional" required>
+            <option value="">Selecione...</option>
+            <option value="LESTE">LESTE</option>
+            <option value="CENTRO">CENTRO</option>
+            <option value="OESTE">OESTE</option>
+          </select>
+        </div>
 
-    <div class="row">
-      <div>
-        <label>6. Serviço LL *</label>
-        <select id="servicoll" name="servicoll" required>
-          <option value="">Selecione...</option>
-          <option>Substituição de isolador pino</option>
-          <option>Substituição de isolador de ancoragem</option>
-          <option>Instalação de cabo protegido / bypass</option>
-          <option>Reparo com emenda pré-formada</option>
-          <option>Ponto quente em bucha secundária</option>
-          <option>Abertura de jumper sem carga</option>
-          <option>Fechamento de jumper sem carga</option>
-          <option>Substituir chave fusível / faca</option>
-          <option>Retirar by-pass</option>
-          <option>Instalação de espaçadores</option>
-          <option>Amarração Grinfa</option>
-          <option>Retirar ninho</option>
-          <option>Retirar pipa/objetos</option>
-          <option>Instalação de elastômetro</option>
-          <option>Poda de árvore em contato</option>
-          <option>Mudança de TAP</option>
-          <option>Conectores Estribo/GLV</option>
-        </select>
-      </div>
-
-      <div>
-        <label>7. Medidor</label>
-        <input id="medidor" name="medidor">
-      </div>
-    </div>
-
-    <div class="row">
-      <div>
-        <label>8. Condutor </label>
-        <input id="condutor" name="condutor">
-      </div>
-
-      <div>
-        <label>9. Alma de Aço *</label>
-        <select id="almaaco" name="almaaco" required>
-          <option>Sim</option>
-          <option>Não</option>
-          <option>Não Verificado</option>
-        </select>
-      </div>
-    </div>
-
-    <div class="row">
-      <div>
-        <label>10. Acesso caminhão *</label>
-        <select id="acessocaminhao" name="acessocaminhao" required>
-          <option>Sim</option>
-          <option>Não</option>
-        </select>
-      </div>
-
-      <div>
-        <label>11. Endereço *</label>
-        <input id="endereco" name="endereco" required>
-      </div>
-    </div>
-
-    <!-- ARQUIVOS -->
-    <div>
-      <label>12. Arquivo + Localização *</label>
-      <input id="file" name="arquivos" type="file" accept="image/*" multiple required>
-
-      <div id="previewBox" style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;"></div>
-
-      <div class="geo-box">
-        <div class="geo-row">
-          <button type="button" id="btnGeo" required>
-            <i class="bi bi-geo-alt-fill"></i> Localizar
-          </button>
-          <input id="gps" name="gps" readonly placeholder="Coordenadas aparecerão aqui" required />
+        <div>
+          <label>2. Base *</label>
+          <select id="base" name="base" required disabled>
+            <option value="">Selecione a regional primeiro...</option>
+          </select>
         </div>
       </div>
-    </div>
 
-    <div>
-      <label>13. Observação</label>
-      <textarea id="observacao" name="observacao" rows="3"></textarea>
-    </div>
+      <!-- EQUIPE -->
+      <div>
+        <label>3. Equipe *</label>
+        <select id="equipe" name="equipe" required disabled>
+          <option value="">Selecione a base primeiro...</option>
+        </select>
+      </div>
 
-    <button id="btnSubmit" type="submit">Enviar Registro LL</button>
+      <div>
+        <label>4. Data *</label>
+        <input type="date" id="data" name="data" required>
+      </div>
 
-  </form>
-</div>
+      <div>
+        <label>5. Componente *</label>
+        <input id="componente" name="componente" required>
+      </div>
 
+      <!-- CAMPOS EXCLUSIVOS LINHA MORTA -->
+      <div id="blocoLinhaMorta" class="hidden">
+        <div class="row">
+          <div>
+            <label>6. Tipo de rede *</label>
+            <select id="tipoRede" name="tipoRede">
+              <option value="">Selecione...</option>
+              <option value="BT">Baixa Tensão</option>
+              <option value="MT">Média Tensão</option>
+            </select>
+          </div>
+
+          <div>
+            <label>7. Tipos de serviços *</label>
+            <select id="servicoLM" name="servicoLM">
+              <option value="">Selecione...</option>
+              <option value="PODA">PODA</option>
+              <option value="REFORMA_DE_REDE">REFORMA DE REDE</option>
+              <option value="AMBOS">AMBOS</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- LINHA VIVA: mantém seu serviço LL original -->
+      <div id="blocoLinhaViva" class="row">
+        <div>
+          <label>6. Serviço LL *</label>
+          <select id="servicoll" name="servicoll" required>
+            <option value="">Selecione...</option>
+            <option>Substituição de isolador pino</option>
+            <option>Substituição de isolador de ancoragem</option>
+            <option>Instalação de cabo protegido / bypass</option>
+            <option>Reparo com emenda pré-formada</option>
+            <option>Ponto quente em bucha secundária</option>
+            <option>Abertura de jumper sem carga</option>
+            <option>Fechamento de jumper sem carga</option>
+            <option>Substituir chave fusível / faca</option>
+            <option>Retirar by-pass</option>
+            <option>Instalação de espaçadores</option>
+            <option>Amarração Grinfa</option>
+            <option>Retirar ninho</option>
+            <option>Retirar pipa/objetos</option>
+            <option>Instalação de elastômetro</option>
+            <option>Poda de árvore em contato</option>
+            <option>Mudança de TAP</option>
+            <option>Conectores Estribo/GLV</option>
+          </select>
+        </div>
+
+        <div>
+          <label>7. Medidor</label>
+          <input id="medidor" name="medidor">
+        </div>
+      </div>
+
+      <div class="row">
+        <div>
+          <label>8. Condutor</label>
+          <input id="condutor" name="condutor">
+        </div>
+
+        <div>
+          <label>9. Alma de Aço *</label>
+          <select id="almaaco" name="almaaco" required>
+            <option>Sim</option>
+            <option>Não</option>
+            <option>Não Verificado</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row">
+        <div>
+          <label>10. Acesso caminhão *</label>
+          <select id="acessocaminhao" name="acessocaminhao" required>
+            <option>Sim</option>
+            <option>Não</option>
+          </select>
+        </div>
+
+        <div>
+          <label>11. Endereço *</label>
+          <input id="endereco" name="endereco" required>
+        </div>
+      </div>
+
+      <!-- ARQUIVOS -->
+      <div>
+        <label>12. Arquivo + Localização *</label>
+        <input id="file" name="arquivos" type="file" accept="image/*" multiple required>
+
+        <div id="previewBox" style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;"></div>
+
+        <div class="geo-box">
+          <div class="geo-row">
+            <button type="button" id="btnGeo">
+              <i class="bi bi-geo-alt-fill"></i> Localizar
+            </button>
+            <input id="gps" name="gps" readonly placeholder="Coordenadas aparecerão aqui" required />
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <label>13. Observação</label>
+        <textarea id="observacao" name="observacao" rows="3"></textarea>
+      </div>
+
+      <button id="btnSubmit" type="submit">Enviar Registro</button>
+    </form>
+  </div>
 
 <script>
 /* =============================================================
    BASES POR REGIONAL
    ============================================================= */
 const basesPorRegional = {
-  "LESTE": [
-    "Cruz do Peixe","Cabedelo","Mangabeira","Paratibe",
-    "Santa Rita","João Pessoa","Mamanguape","Sapé",
-    "Itabaiana","Caaporã"
-  ],
-  "CENTRO": [
-    "Campina Grande","Borborema","Esperança",
-    "Guarabira","Monteiro"
-  ],
-  "OESTE": [
-    "Itaporanga","Patos","Sousa",
-    "Catolé do Rocha","Princesa Isabel","Cajazeiras"
-  ]
+  "LESTE": ["Cruz do Peixe","Cabedelo","Mangabeira","Paratibe","Santa Rita","João Pessoa","Mamanguape","Sapé","Itabaiana","Caaporã"],
+  "CENTRO": ["Campina Grande","Borborema","Esperança","Guarabira","Monteiro"],
+  "OESTE": ["Itaporanga","Patos","Sousa","Catolé do Rocha","Princesa Isabel","Cajazeiras"]
 };
-
-/* =============================================================
-   DATA ATUAL AUTOMÁTICA
-   ============================================================= */
-document.getElementById("data").value = new Date().toISOString().slice(0,10);
 
 /* =============================================================
    EQUIPES POR BASE
@@ -356,18 +406,77 @@ const equipesPorBase = {
 };
 
 /* =============================================================
-   CALCULAR REGIONAL A PARTIR DA BASE (FIX DEFINITIVO)
+   CALCULAR REGIONAL A PARTIR DA BASE
    ============================================================= */
 function calcularRegionalPorBase(base) {
   if (!base) return "NÃO ENCONTRADA";
-
   for (const regional in basesPorRegional) {
-    if (basesPorRegional[regional].includes(base)) {
-      return regional;
-    }
+    if (basesPorRegional[regional].includes(base)) return regional;
   }
   return "NÃO ENCONTRADA";
 }
+
+/* =============================================================
+   MENU: LINHA VIVA / LINHA MORTA
+   ============================================================= */
+let tipoServicoSelecionado = ""; // "LINHA_VIVA" | "LINHA_MORTA"
+
+const menuTipo = document.getElementById("menuTipo");
+const form = document.getElementById("llForm");
+const badge = document.getElementById("modeBadge");
+
+const blocoViva = document.getElementById("blocoLinhaViva");
+const blocoMorta = document.getElementById("blocoLinhaMorta");
+const tipoRedeEl = document.getElementById("tipoRede");
+const servicoLMEl = document.getElementById("servicoLM");
+const servicollEl = document.getElementById("servicoll");
+
+function abrirFormulario(modo) {
+  tipoServicoSelecionado = modo;
+
+  menuTipo.classList.add("hidden");
+  form.classList.remove("hidden");
+  badge.classList.remove("hidden");
+
+  if (modo === "LINHA_VIVA") {
+    badge.textContent = "Modo selecionado: LINHA VIVA";
+    blocoViva.classList.remove("hidden");
+    blocoMorta.classList.add("hidden");
+
+    // Viva: serviço LL obrigatório
+    servicollEl.required = true;
+
+    // Morta: campos não obrigatórios
+    tipoRedeEl.required = false;
+    servicoLMEl.required = false;
+    tipoRedeEl.value = "";
+    servicoLMEl.value = "";
+
+    document.getElementById("btnSubmit").textContent = "Enviar Registro (Linha Viva)";
+  } else {
+    badge.textContent = "Modo selecionado: LINHA MORTA";
+    blocoViva.classList.add("hidden");
+    blocoMorta.classList.remove("hidden");
+
+    // Morta: campos obrigatórios
+    tipoRedeEl.required = true;
+    servicoLMEl.required = true;
+
+    // Viva: não obrigatório e limpa
+    servicollEl.required = false;
+    servicollEl.value = "";
+
+    document.getElementById("btnSubmit").textContent = "Enviar Registro (Linha Morta)";
+  }
+}
+
+document.getElementById("btnLinhaViva").onclick = () => abrirFormulario("LINHA_VIVA");
+document.getElementById("btnLinhaMorta").onclick = () => abrirFormulario("LINHA_MORTA");
+
+/* =============================================================
+   DATA ATUAL AUTOMÁTICA
+   ============================================================= */
+document.getElementById("data").value = new Date().toISOString().slice(0,10);
 
 /* =============================================================
    REGIONAL → BASE
@@ -476,16 +585,19 @@ const SUBMIT_URL = "https://withered-hat-347d.pedro-fillype.workers.dev/submit";
 document.getElementById("llForm").onsubmit = async e => {
   e.preventDefault();
 
+  if (!tipoServicoSelecionado) {
+    alert("Selecione: Linha Viva ou Linha Morta.");
+    return;
+  }
+
   const overlay = document.getElementById("overlayEnvio");
   const btn = document.getElementById("btnSubmit");
-
   overlay.style.display = "flex";
   btn.disabled = true;
 
   try {
     const fd = new FormData();
     const files = document.getElementById("file").files;
-
     if (!files.length) throw "Selecione ao menos uma imagem.";
 
     for (let i = 0; i < files.length; i++) {
@@ -493,30 +605,53 @@ document.getElementById("llForm").onsubmit = async e => {
       fd.append("arquivos", new File([blob], `foto_${i+1}.jpg`, { type:"image/jpeg" }));
     }
 
-    const campos = [
-      "base","equipe","data","componente","servicoll",
+    // campos comuns
+    const camposComuns = [
+      "base","equipe","data","componente",
       "medidor","condutor","almaaco","acessocaminhao",
       "endereco","gps","observacao"
     ];
 
-    for (const id of campos) {
+    for (const id of camposComuns) {
       const el = document.getElementById(id);
       if (!el || !el.value) throw `Campo obrigatório não preenchido: ${id}`;
       fd.append(id, el.value);
     }
 
-    // REGIONAL CALCULADA CORRETAMENTE
+    // modo escolhido
+    fd.append("tipo_servico", tipoServicoSelecionado);
+
+    // campos específicos
+    if (tipoServicoSelecionado === "LINHA_VIVA") {
+      if (!servicollEl.value) throw "Selecione o Serviço LL.";
+      fd.append("servicoll", servicollEl.value);
+    } else {
+      if (!tipoRedeEl.value) throw "Selecione o Tipo de rede.";
+      if (!servicoLMEl.value) throw "Selecione o Tipo de serviço (Linha Morta).";
+      fd.append("tipo_rede", tipoRedeEl.value);
+      fd.append("servico_lm", servicoLMEl.value);
+    }
+
+    // regional calculada pela base
     const regionalCalculada = calcularRegionalPorBase(baseEl.value);
     fd.append("regional", regionalCalculada);
 
     const r = await fetch(SUBMIT_URL, { method:"POST", body: fd });
     if (!r.ok) throw await r.text();
 
-    alert("Registro LL enviado com sucesso!");
-    llForm.reset();
+    alert("Registro enviado com sucesso!");
+
+    // reset geral
+    form.reset();
     document.getElementById("previewBox").innerHTML = "";
     baseEl.disabled = true;
     equipeEl.disabled = true;
+
+    // volta para menu
+    form.classList.add("hidden");
+    badge.classList.add("hidden");
+    menuTipo.classList.remove("hidden");
+    tipoServicoSelecionado = "";
 
   } catch (err) {
     alert(err);
@@ -526,6 +661,5 @@ document.getElementById("llForm").onsubmit = async e => {
   }
 };
 </script>
-
 </body>
 </html>
