@@ -487,6 +487,9 @@ const blocoMorta = document.getElementById("blocoLinhaMorta");
 const tipoRedeEl = document.getElementById("tipoRede");
 const servicoLMEl = document.getElementById("servicoLM");
 const servicollEl = document.getElementById("servicoll");
+const redePrecariaEl = document.getElementById("redePrecaria");
+const qtdVaosEl = document.getElementById("qtdVaos");
+const necessidadePodaEl = document.getElementById("necessidadePoda");
 
 function abrirFormulario(modo) {
   tipoServicoSelecionado = modo;
@@ -509,6 +512,14 @@ function abrirFormulario(modo) {
     servicoLMEl.required = false;
     tipoRedeEl.value = "";
     servicoLMEl.value = "";
+    // Morta extras: não obrigatórios no modo viva + limpa
+    redePrecariaEl.required = false;
+    qtdVaosEl.required = false;
+    necessidadePodaEl.required = false;
+    
+    redePrecariaEl.value = "";
+    qtdVaosEl.value = "";
+    necessidadePodaEl.value = "";
 
     document.getElementById("btnSubmit").textContent = "Enviar Registro (Linha Viva)";
   } else {
@@ -523,6 +534,10 @@ function abrirFormulario(modo) {
     // Viva: não obrigatório e limpa
     servicollEl.required = false;
     servicollEl.value = "";
+        // Morta extras: obrigatórios
+    redePrecariaEl.required = true;
+    qtdVaosEl.required = true;
+    necessidadePodaEl.required = true;
 
     document.getElementById("btnSubmit").textContent = "Enviar Registro (Linha Morta)";
   }
@@ -696,6 +711,13 @@ document.getElementById("llForm").onsubmit = async e => {
       fd.append("tipo_rede", tipoRedeEl.value);
       fd.append("servico_lm", servicoLMEl.value);
     }
+    if (!redePrecariaEl.value) throw "Selecione: Rede Precária.";
+if (!qtdVaosEl.value) throw "Informe: Quantidade de vãos.";
+if (!necessidadePodaEl.value) throw "Selecione: Necessidade de Poda.";
+
+fd.append("rede_precaria", redePrecariaEl.value);
+fd.append("qtd_vaos", String(qtdVaosEl.value));
+fd.append("necessidade_poda", necessidadePodaEl.value);
 
     // regional calculada pela base
     const regionalCalculada = calcularRegionalPorBase(baseEl.value);
