@@ -213,12 +213,12 @@
     <!-- BADGE DO MODO -->
     <div id="modeBadge" class="mode-badge hidden"></div>
 
-    <!-- AÇÕES (VOLTar) -->
-<div id="acoesTopo" class="hidden" style="display:flex; justify-content:flex-start; margin: 10px 0 14px;">
-  <button type="button" id="btnVoltarMenu" style="background:#6c757d;">
-    <i class="bi bi-arrow-left"></i> Voltar
-  </button>
-</div>
+    <!-- AÇÕES (VOLTAR) -->
+    <div id="acoesTopo" class="hidden" style="display:flex; justify-content:flex-start; margin: 10px 0 14px;">
+      <button type="button" id="btnVoltarMenu" style="background:#6c757d;">
+        <i class="bi bi-arrow-left"></i> Voltar
+      </button>
+    </div>
 
     <form id="llForm" class="hidden" autocomplete="off" enctype="multipart/form-data">
 
@@ -273,43 +273,43 @@
           </div>
 
           <div>
-    <label>Rede Precária? *</label>
-    <select id="redePrecaria" name="redePrecaria">
-      <option value="">Selecione...</option>
-      <option>Sim</option>
-      <option>Não</option>
-    </select>
-  </div>
-
-          
-  <div>
-    <label>Quantidade de vãos? *</label>
-    <input id="qtdVaos" name="qtdVaos" type="number" min="0" step="1" placeholder="Ex: 3">
-  </div>
-
-           <div>
-    <label>Necessidade de Poda? *</label>
-    <select id="necessidadePoda" name="necessidadePoda">
-      <option value="">Selecione...</option>
-      <option>Sim</option>
-      <option>Não</option>
-    </select>
-  </div>
-
-          <div>
-            <label>Tipos de serviços *</label>
-            <select id="servicoLM" name="servicoLM">
+            <label>Rede Precária? *</label>
+            <select id="redePrecaria" name="redePrecaria">
               <option value="">Selecione...</option>
-              <option value="PODA">PODA</option>
-              <option value="REFORMA_DE_REDE">REFORMA DE REDE</option>
-              <option value="AMBOS">AMBOS</option>
+              <option>Sim</option>
+              <option>Não</option>
             </select>
           </div>
         </div>
-        
+
+        <div class="row">
+          <div>
+            <label>Quantidade de vãos? *</label>
+            <input id="qtdVaos" name="qtdVaos" type="number" min="0" step="1" placeholder="Ex: 3">
+          </div>
+
+          <div>
+            <label>Necessidade de Poda? *</label>
+            <select id="necessidadePoda" name="necessidadePoda">
+              <option value="">Selecione...</option>
+              <option>Sim</option>
+              <option>Não</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label>Tipos de serviços *</label>
+          <select id="servicoLM" name="servicoLM">
+            <option value="">Selecione...</option>
+            <option value="PODA">PODA</option>
+            <option value="REFORMA_DE_REDE">REFORMA DE REDE</option>
+            <option value="AMBOS">AMBOS</option>
+          </select>
+        </div>
       </div>
 
-      <!-- LINHA VIVA: mantém seu serviço LL original -->
+      <!-- LINHA VIVA -->
       <div id="blocoLinhaViva" class="row">
         <div>
           <label>Serviço LL *</label>
@@ -400,30 +400,31 @@
   </div>
 
 <script>
-
-  const acoesTopo = document.getElementById("acoesTopo");
+/* =============================================================
+   BOTÃO VOLTAR
+   ============================================================= */
+const acoesTopo = document.getElementById("acoesTopo");
 const btnVoltarMenu = document.getElementById("btnVoltarMenu");
 
+const menuTipo = document.getElementById("menuTipo");
+const form = document.getElementById("llForm");
+const badge = document.getElementById("modeBadge");
+
 function voltarParaMenu() {
-  // limpa tudo
   form.reset();
   document.getElementById("previewBox").innerHTML = "";
   baseEl.disabled = true;
   equipeEl.disabled = true;
 
-  // limpa modo
   tipoServicoSelecionado = "";
 
-  // volta UI
   form.classList.add("hidden");
   badge.classList.add("hidden");
   acoesTopo.classList.add("hidden");
   menuTipo.classList.remove("hidden");
 }
-
 btnVoltarMenu.onclick = voltarParaMenu;
 
-  
 /* =============================================================
    BASES POR REGIONAL
    ============================================================= */
@@ -478,15 +479,17 @@ function calcularRegionalPorBase(base) {
    ============================================================= */
 let tipoServicoSelecionado = ""; // "LINHA_VIVA" | "LINHA_MORTA"
 
-const menuTipo = document.getElementById("menuTipo");
-const form = document.getElementById("llForm");
-const badge = document.getElementById("modeBadge");
-
 const blocoViva = document.getElementById("blocoLinhaViva");
 const blocoMorta = document.getElementById("blocoLinhaMorta");
+
+const regionalEl = document.getElementById("regional");
+const baseEl = document.getElementById("base");
+const equipeEl = document.getElementById("equipe");
+
 const tipoRedeEl = document.getElementById("tipoRede");
 const servicoLMEl = document.getElementById("servicoLM");
 const servicollEl = document.getElementById("servicoll");
+
 const redePrecariaEl = document.getElementById("redePrecaria");
 const qtdVaosEl = document.getElementById("qtdVaos");
 const necessidadePodaEl = document.getElementById("necessidadePoda");
@@ -504,19 +507,17 @@ function abrirFormulario(modo) {
     blocoViva.classList.remove("hidden");
     blocoMorta.classList.add("hidden");
 
-    // Viva: serviço LL obrigatório
     servicollEl.required = true;
 
-    // Morta: campos não obrigatórios
+    // limpa / desobriga LM
     tipoRedeEl.required = false;
     servicoLMEl.required = false;
-    tipoRedeEl.value = "";
-    servicoLMEl.value = "";
-    // Morta extras: não obrigatórios no modo viva + limpa
     redePrecariaEl.required = false;
     qtdVaosEl.required = false;
     necessidadePodaEl.required = false;
-    
+
+    tipoRedeEl.value = "";
+    servicoLMEl.value = "";
     redePrecariaEl.value = "";
     qtdVaosEl.value = "";
     necessidadePodaEl.value = "";
@@ -527,17 +528,16 @@ function abrirFormulario(modo) {
     blocoViva.classList.add("hidden");
     blocoMorta.classList.remove("hidden");
 
-    // Morta: campos obrigatórios
+    // obriga LM
     tipoRedeEl.required = true;
     servicoLMEl.required = true;
-
-    // Viva: não obrigatório e limpa
-    servicollEl.required = false;
-    servicollEl.value = "";
-        // Morta extras: obrigatórios
     redePrecariaEl.required = true;
     qtdVaosEl.required = true;
     necessidadePodaEl.required = true;
+
+    // limpa LV
+    servicollEl.required = false;
+    servicollEl.value = "";
 
     document.getElementById("btnSubmit").textContent = "Enviar Registro (Linha Morta)";
   }
@@ -554,10 +554,6 @@ document.getElementById("data").value = new Date().toISOString().slice(0,10);
 /* =============================================================
    REGIONAL → BASE
    ============================================================= */
-const regionalEl = document.getElementById("regional");
-const baseEl = document.getElementById("base");
-const equipeEl = document.getElementById("equipe");
-
 regionalEl.addEventListener("change", () => {
   const regional = regionalEl.value;
 
@@ -651,7 +647,7 @@ function compressImage(file) {
 }
 
 /* =============================================================
-   SUBMIT + OVERLAY ENVIANDO
+   SUBMIT
    ============================================================= */
 const SUBMIT_URL = "https://withered-hat-347d.pedro-fillype.workers.dev/submit";
 
@@ -686,40 +682,38 @@ document.getElementById("llForm").onsubmit = async e => {
     ];
 
     for (const id of camposComuns) {
-  const el = document.getElementById(id);
-  if (!el) continue;
+      const el = document.getElementById(id);
+      if (!el) continue;
 
-  // ✅ Só valida se o campo for required no HTML
-  if (el.required && !String(el.value || "").trim()) {
-    throw `Campo obrigatório não preenchido: ${id}`;
-  }
+      if (el.required && !String(el.value || "").trim()) {
+        throw `Campo obrigatório não preenchido: ${id}`;
+      }
 
-  // ✅ Envia mesmo vazio (opcionais)
-  fd.append(id, el.value || "");
-}
+      fd.append(id, el.value || "");
+    }
 
-    // modo escolhido
+    // modo
     fd.append("tipo_servico", tipoServicoSelecionado);
 
-    // campos específicos
+    // específicos
     if (tipoServicoSelecionado === "LINHA_VIVA") {
       if (!servicollEl.value) throw "Selecione o Serviço LL.";
       fd.append("servicoll", servicollEl.value);
     } else {
       if (!tipoRedeEl.value) throw "Selecione o Tipo de rede.";
       if (!servicoLMEl.value) throw "Selecione o Tipo de serviço (Linha Morta).";
+      if (!redePrecariaEl.value) throw "Selecione: Rede Precária.";
+      if (qtdVaosEl.value === "") throw "Informe: Quantidade de vãos.";
+      if (!necessidadePodaEl.value) throw "Selecione: Necessidade de Poda.";
+
       fd.append("tipo_rede", tipoRedeEl.value);
       fd.append("servico_lm", servicoLMEl.value);
+      fd.append("rede_precaria", redePrecariaEl.value);
+      fd.append("qtd_vaos", String(qtdVaosEl.value));
+      fd.append("necessidade_poda", necessidadePodaEl.value);
     }
-    if (!redePrecariaEl.value) throw "Selecione: Rede Precária.";
-if (!qtdVaosEl.value) throw "Informe: Quantidade de vãos.";
-if (!necessidadePodaEl.value) throw "Selecione: Necessidade de Poda.";
 
-fd.append("rede_precaria", redePrecariaEl.value);
-fd.append("qtd_vaos", String(qtdVaosEl.value));
-fd.append("necessidade_poda", necessidadePodaEl.value);
-
-    // regional calculada pela base
+    // regional calculada
     const regionalCalculada = calcularRegionalPorBase(baseEl.value);
     fd.append("regional", regionalCalculada);
 
@@ -728,16 +722,17 @@ fd.append("necessidade_poda", necessidadePodaEl.value);
 
     alert("Registro enviado com sucesso!");
 
-    // reset geral
+    // reset
     form.reset();
     document.getElementById("previewBox").innerHTML = "";
     baseEl.disabled = true;
     equipeEl.disabled = true;
 
-    // volta para menu
+    // volta menu
     form.classList.add("hidden");
     badge.classList.add("hidden");
     menuTipo.classList.remove("hidden");
+    acoesTopo.classList.add("hidden");
     tipoServicoSelecionado = "";
 
   } catch (err) {
