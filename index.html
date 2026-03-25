@@ -376,7 +376,15 @@
       <!-- ARQUIVOS -->
       <div>
         <label>Arquivo + Localização *</label>
-        <input id="file" name="arquivos" type="file" accept="image/*" multiple required>
+        <input 
+  id="file" 
+  name="arquivos" 
+  type="file" 
+  accept="image/*"
+  capture="environment"
+  multiple
+  required
+>
 
         <div id="previewBox" style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;"></div>
 
