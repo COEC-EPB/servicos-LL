@@ -375,28 +375,38 @@
 
       <!-- ARQUIVOS -->
       <div>
-        <label>Arquivo + Localização *</label>
-        <input 
-  id="file" 
-  name="arquivos" 
-  type="file" 
-  accept="image/*"
-  capture="environment"
-  multiple
-  required
->
+  <label>Arquivo + Localização *</label>
 
-        <div id="previewBox" style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;"></div>
+  <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:10px;">
+    <button type="button" id="btnCamera" style="background:#F36F21;">
+      <i class="bi bi-camera-fill"></i> Tirar Foto
+    </button>
 
-        <div class="geo-box">
-          <div class="geo-row">
-            <button type="button" id="btnGeo">
-              <i class="bi bi-geo-alt-fill"></i> Localizar
-            </button>
-            <input id="gps" name="gps" readonly placeholder="Coordenadas aparecerão aqui" required />
-          </div>
-        </div>
-      </div>
+    <button type="button" id="btnGaleria" style="background:#0097CE;">
+      <i class="bi bi-images"></i> Escolher da Galeria
+    </button>
+  </div>
+
+  <!-- input real usado no envio -->
+  <input id="file" name="arquivos" type="file" accept="image/*" multiple required style="display:none;">
+
+  <!-- input só para câmera -->
+  <input id="fileCamera" type="file" accept="image/*" capture="environment" multiple style="display:none;">
+
+  <!-- input só para galeria -->
+  <input id="fileGaleria" type="file" accept="image/*" multiple style="display:none;">
+
+  <div id="previewBox" style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;"></div>
+
+  <div class="geo-box">
+    <div class="geo-row">
+      <button type="button" id="btnGeo">
+        <i class="bi bi-geo-alt-fill"></i> Localizar
+      </button>
+      <input id="gps" name="gps" readonly placeholder="Coordenadas aparecerão aqui" required />
+    </div>
+  </div>
+</div>
 
       <div>
         <label>Observação</label>
